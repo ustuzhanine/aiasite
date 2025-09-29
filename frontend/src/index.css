@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Arial Nova Fonts */
+@font-face {
+  font-family: 'Arial Nova';
+  src: url('/fonts/Arial Nova/ArialNova.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Arial Nova';
+  src: url('/fonts/Arial Nova/ArialNova-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Arial Nova';
+  src: url('/fonts/Arial Nova/ArialNova-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: white; /* Устанавливаем белый фон */
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Partners Carousel Animation */
+.carousel-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    margin: 40px auto;
+    padding: 20px 0;
+}
+
+.carousel-track {
+    display: flex;
+    width: fit-content; /* Important for infinite scroll */
+    animation: scroll 30s linear infinite;
+}
+
+.carousel-track:hover {
+    animation-play-state: paused;
+}
+
+.partner-logo {
+    flex-shrink: 0;
+    width: 150px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px;
+}
+
+.partner-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%); /* Optional: for consistent look */
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.partner-logo img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Adaptive Carousel */
+@media (max-width: 1024px) {
+    .partner-logo {
+        width: 120px; /* Smaller logos for tablets */
+        margin: 0 15px;
+    }
+    .carousel-track {
+        animation-duration: 40s; /* Slower scroll for more logos */
+    }
+}
+
+@media (max-width: 768px) {
+    .partner-logo {
+        width: 100px; /* Even smaller logos for mobile */
+        margin: 0 10px;
+    }
+    .carousel-track {
+        animation-duration: 50s; /* Even slower scroll for fewer logos on screen */
+    }
+}
+
+@media (max-width: 480px) {
+    .partner-logo {
+        width: 80px; /* Smallest logos for small mobile screens */
+        margin: 0 8px;
+    }
+    .carousel-track {
+        animation-duration: 60s; /* Slowest scroll */
+    }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
