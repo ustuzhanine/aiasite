@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import imgAiaLogo from '/assets/AIA logo.png';
+import imgFooterLogo from '/assets/logo-footer.png';
 import imgGroup from '/assets/1ebc5b838508a18566e427e580ee4292afefc6f7.svg';
 import imgGroup1 from '/assets/cc2c17757a3f6bc8c3a501729b1a7711be8c131d.svg';
 import imgVector from '/assets/cfa8a1f87fed6f20c8816f821e60e45b80e03158.svg';
@@ -53,6 +54,13 @@ export default function FigmaDesktopCanvas() {
   const [scale, setScale] = useState(Math.min(window.innerWidth / 1920, 1));
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
+  
+  // Состояния для перетаскивания мышью
+  const [isDraggingPartners, setIsDraggingPartners] = useState(false);
+  const [isDraggingTeam, setIsDraggingTeam] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
+  const autoScrollTimeoutRef = useRef(null);
 
   // Массив всех партнеров
   const partners = [
@@ -85,21 +93,93 @@ export default function FigmaDesktopCanvas() {
 
   // Автоматическое движение слайдера партнеров слева направо
   useEffect(() => {
+    if (isAutoScrollPaused) return;
+    
     const interval = setInterval(() => {
-      setPartnerSlidePosition((prev) => prev - 5); // Скорость увеличена в 2 раза
-    }, 30); // Обновление каждые 30мс для плавности
+      setPartnerSlidePosition((prev) => {
+        // Рассчитываем общую ширину одного набора партнеров (7 партнеров * ~230px ширина с gap)
+        const partnerSetWidth = partners.length * 230;
+        
+        // Когда прошли один полный набор, сбрасываем позицию для бесшовного зацикливания
+        if (prev <= -partnerSetWidth) {
+          return 0;
+        }
+        return prev - 5;
+      });
+    }, 30);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [partners.length, isAutoScrollPaused]);
 
   // Автоматическое движение слайдера команды справа налево
   useEffect(() => {
+    if (isAutoScrollPaused) return;
+    
     const interval = setInterval(() => {
-      setTeamSlidePosition((prev) => prev - 3); // Плавное движение
-    }, 30); // Обновление каждые 30мс для плавности
+      setTeamSlidePosition((prev) => {
+        // Ширина одного изображения команды (6000px без gap)
+        const teamImageWidth = 6000;
+        
+        // Когда прошли одно изображение, сбрасываем позицию для бесшовного зацикливания
+        if (prev <= -teamImageWidth) {
+          return 0;
+        }
+        return prev - 3;
+      });
+    }, 30);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isAutoScrollPaused]);
+
+  // Обработчики для перетаскивания карусели партнеров мышью
+  const handlePartnersMouseDown = (e) => {
+    setIsDraggingPartners(true);
+    setStartX(e.clientX);
+    setIsAutoScrollPaused(true);
+    if (autoScrollTimeoutRef.current) clearTimeout(autoScrollTimeoutRef.current);
+    e.preventDefault(); // Предотвращаем выделение текста
+  };
+
+  const handlePartnersMouseMove = (e) => {
+    if (!isDraggingPartners) return;
+    const currentX = e.clientX;
+    const diff = currentX - startX;
+    setPartnerSlidePosition((prev) => prev + diff);
+    setStartX(currentX);
+  };
+
+  const handlePartnersMouseUp = () => {
+    setIsDraggingPartners(false);
+    // Возобновляем автопрокрутку через 2 секунды
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrollPaused(false);
+    }, 2000);
+  };
+
+  // Обработчики для перетаскивания карусели команды мышью
+  const handleTeamMouseDown = (e) => {
+    setIsDraggingTeam(true);
+    setStartX(e.clientX);
+    setIsAutoScrollPaused(true);
+    if (autoScrollTimeoutRef.current) clearTimeout(autoScrollTimeoutRef.current);
+    e.preventDefault();
+  };
+
+  const handleTeamMouseMove = (e) => {
+    if (!isDraggingTeam) return;
+    const currentX = e.clientX;
+    const diff = currentX - startX;
+    setTeamSlidePosition((prev) => prev + diff);
+    setStartX(currentX);
+  };
+
+  const handleTeamMouseUp = () => {
+    setIsDraggingTeam(false);
+    // Возобновляем автопрокрутку через 2 секунды
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrollPaused(false);
+    }, 2000);
+  };
 
   const handleSmoothScroll = (e) => {
     e.preventDefault();
@@ -145,22 +225,27 @@ export default function FigmaDesktopCanvas() {
         <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
       </div>
       
-      {/* Header (шапка сайта) - поверх видео */}
-      <div className="absolute bg-[#071a31] h-[95px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[-14px] w-[1920px] z-30" data-node-id="1:5" />
-      <div className="absolute bg-[#071a31] h-[385px] left-0 shadow-[9px_9px_16px_-1px_rgba(0,0,0,0.25)] top-[9398px] w-[1920px] z-10" data-node-id="21:109" />
-      <div className="absolute bg-[#071a31] h-[416px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[6457px] w-[288px] z-10 flex-shrink-0" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="40:135" />
-      <div className="absolute h-[41px] left-[415px] top-[20px] w-[63px] z-50" data-name="HEAD_NEW_55-01_1x" data-node-id="1:4" style={{ aspectRatio: '63/41' }}>
+      {/* Header (шапка сайта) - фиксированная */}
+      <div className="fixed bg-[#071a31] h-[76px] top-0 w-full left-1/2 -translate-x-1/2 max-w-[1920px] z-[100]" data-node-id="1:5" />
+      {/* Логотип в шапке */}
+      <div className="fixed h-[41px] top-[17.5px] w-[63px] z-[110] left-1/2" data-name="HEAD_NEW_55-01_1x" data-node-id="1:4" style={{ aspectRatio: '63/41', marginLeft: 'calc(-960px + 415px)' }}>
         <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgAiaLogo} />
       </div>
+      <div className="absolute bg-[#071a31] h-[385px] left-0 shadow-[9px_9px_16px_-1px_rgba(0,0,0,0.25)] top-[9550px] w-[1920px] z-10" data-node-id="21:109" />
+      {/* Логотип в футере */}
+      <div className="absolute left-[150px] top-[9630px] h-[75px] w-auto z-20">
+        <img alt="AIA Logo" className="h-full w-auto object-contain" src={imgFooterLogo} />
+      </div>
+      <div className="absolute bg-[#071a31] h-[416px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[6457px] w-[288px] z-10 flex-shrink-0" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="40:135" />
       <div 
-        className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[1415.5px] text-[20px] text-center text-[#e4eef9] top-[39px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-50 cursor-pointer hover:opacity-80 transition-opacity" 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:57" 
-        style={{ color: '#e4eef9', fontWeight: 100 }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1300px)' }}
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">о нас</p>
       </div>
-      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1241px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100 }} data-node-id="14:71">
+      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1241px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100, scrollMarginTop: '100px' }} data-node-id="14:71">
         <p className="leading-[normal]">О нас</p>
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[2487px] translate-y-[-50%] w-[683px] z-10" style={{ fontWeight: 100 }} data-node-id="49:276">
@@ -168,7 +253,13 @@ export default function FigmaDesktopCanvas() {
       </div>
       
       {/* Слайдер партнеров */}
-      <div className="absolute left-0 top-[2620px] w-[1920px] h-[250px] overflow-hidden z-20">
+      <div 
+        className="absolute left-0 top-[2620px] w-[1920px] h-[250px] overflow-hidden z-20 cursor-grab active:cursor-grabbing"
+        onMouseDown={handlePartnersMouseDown}
+        onMouseMove={handlePartnersMouseMove}
+        onMouseUp={handlePartnersMouseUp}
+        onMouseLeave={handlePartnersMouseUp}
+      >
         <div 
           className="flex items-center gap-[80px] h-full"
           style={{
@@ -209,37 +300,37 @@ export default function FigmaDesktopCanvas() {
         </div>
       </div>
       
-      <div id="services" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[2972px] translate-y-[-50%] w-[468px] z-10" data-node-id="14:73" style={{ left: "calc(50% - 549px)", fontWeight: 100 }}>
+      <div id="services" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[2972px] translate-y-[-50%] w-[468px] z-10" data-node-id="14:73" style={{ left: "calc(50% - 549px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Наши услуги</p>
       </div>
-      <div id="projects" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[4536px] translate-y-[-50%] w-[468px] z-10" data-node-id="27:120" style={{ left: "calc(50% - 554px)", fontWeight: 100 }}>
+      <div id="projects" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[4536px] translate-y-[-50%] w-[468px] z-10" data-node-id="27:120" style={{ left: "calc(50% - 554px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Наши проекты</p>
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[6298px] translate-y-[-50%] w-[789px] z-10" data-node-id="40:132" style={{ left: "calc(50% - 542px)", fontWeight: 100 }}>
         <p className="leading-[normal]">Лицензии и Сертификаты</p>
       </div>
-      <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[7105px] translate-y-[-50%] w-[789px] z-10" data-node-id="40:136" style={{ left: "calc(50% - 542px)", fontWeight: 100 }}>
+      <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[7105px] translate-y-[-50%] w-[789px] z-10" data-node-id="40:136" style={{ left: "calc(50% - 542px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Наша команда</p>
       </div>
-      <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[184px] justify-center leading-[0] text-[#071a31] text-[40px] top-[8458px] translate-y-[-50%] w-[1026px] z-10" data-node-id="20:99" style={{ left: "calc(50% - 542px)", fontWeight: 100 }}>
+      <div id="contact" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[184px] justify-center leading-[0] text-[#071a31] text-[40px] top-[8458px] translate-y-[-50%] w-[1026px] z-10" data-node-id="20:99" style={{ left: "calc(50% - 542px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Напишите нам, и мы найдем оптимальное ИИ-решение для вашего бизнеса</p>
       </div>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9448px] w-[815px] z-20" data-node-id="21:111" style={{ left: "calc(50% - 186px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9600px] w-[815px] z-20" data-node-id="21:111" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9504px] w-[815px] z-20" data-node-id="21:117" style={{ left: "calc(50% - 186px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9656px] w-[815px] z-20" data-node-id="21:117" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         +7 (495) 123-47-05
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9560px] w-[815px] z-20" data-node-id="21:118" style={{ left: "calc(50% - 186px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9712px] w-[815px] z-20" data-node-id="21:118" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         in@aiagency.ru
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9504px] w-[205px] z-20" data-node-id="21:114" style={{ left: "calc(50% - 544px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9656px] w-[205px] z-20" data-node-id="21:114" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         телефон
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9448px] w-[205px] z-20" data-node-id="21:116" style={{ left: "calc(50% - 544px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9600px] w-[205px] z-20" data-node-id="21:116" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         адрес
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[59px] text-[30px] text-[#e4eef9] top-[9560px] w-[317px] z-20" data-node-id="21:115" style={{ left: "calc(50% - 544px)", color: '#e4eef9', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9712px] w-[317px] z-20" data-node-id="21:115" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         электронная почта
       </p>
       <div className="absolute font-['Montserrat',sans-serif] h-[622px] leading-[normal] left-[411px] text-[#071a31] text-[35px] top-[1324px] w-[1283px] z-10" style={{ fontWeight: 100 }} data-node-id="14:72">
@@ -250,26 +341,34 @@ export default function FigmaDesktopCanvas() {
         <p>Наша команда объединяет кандидатов наук, выпускников Сколково и признанных экспертов отрасли с многолетним практическим опытом. Мы не только знаем теорию ИИ, но и понимаем, как применить эти знания для роста эффективности и прибыльности бизнеса.</p>
       </div>
       <div 
-        className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[1534.5px] text-[20px] text-center text-[#e4eef9] top-[39px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-50 cursor-pointer hover:opacity-80 transition-opacity" 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:62" 
-        style={{ color: '#e4eef9', fontWeight: 100 }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1420px)' }}
         onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">услуги</p>
       </div>
       <div 
-        className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[1674.5px] text-[20px] text-center text-[#e4eef9] top-[39px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-50 cursor-pointer hover:opacity-80 transition-opacity" 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:63" 
-        style={{ color: '#e4eef9', fontWeight: 100 }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1540px)' }}
         onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">проекты</p>
       </div>
       <div 
-        className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[1813.5px] text-[20px] text-center text-[#e4eef9] top-[39px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-50 cursor-pointer hover:opacity-80 transition-opacity" 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
+        data-node-id="14:65" 
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1660px)' }}
+        onClick={() => document.getElementById('team')?.scrollIntoView({ behavior: 'smooth' })}
+      >
+        <p className="leading-[normal]">команда</p>
+      </div>
+      <div 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:64" 
-        style={{ color: '#e4eef9', fontWeight: 100 }}
-        onClick={() => document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' })}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1780px)' }}
+        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">контакты</p>
       </div>
@@ -281,35 +380,35 @@ export default function FigmaDesktopCanvas() {
       </div>
       {/* Кнопка "связаться с нами" - поверх всех слоёв hero */}
       <div 
-        className="absolute left-[425px] top-[706px] w-[337px] h-[70px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-50 cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+        className="absolute left-[425px] top-[706px] w-[337px] h-[70px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[110] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
         data-node-id="14:70"
-        onClick={() => document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' })}
+        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        <p className="font-['Montserrat',sans-serif] font-medium text-[20px] text-[#e4eef9] leading-[normal]" data-node-id="14:69" style={{ color: '#e4eef9' }}>
+        <p className="font-['Montserrat',sans-serif] font-medium text-[20px] text-[#ffffff] leading-[normal]" data-node-id="14:69" style={{ color: '#ffffff' }}>
           связаться с нами
         </p>
       </div>
       {/* Карточки услуг */}
-      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3090px] w-[1256px] z-20" data-node-id="20:89" />
-      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3497px] w-[1256px] z-20" data-node-id="20:92" />
-      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3904px] w-[1256px] z-20" data-node-id="20:95" />
+      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3050px] w-[1256px] z-20" data-node-id="20:89" />
+      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3457px] w-[1256px] z-20" data-node-id="20:92" />
+      <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3864px] w-[1256px] z-20" data-node-id="20:95" />
       {/* Тексты на карточках услуг */}
-      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#e4eef9] top-[3274px] w-[1098px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:90">
+      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#ffffff] top-[3208px] w-[1098px] z-30" style={{ color: '#ffffff', fontWeight: 100 }} data-node-id="20:90">
         Обучаем топ-менеджеров и специалистов компаний практическому применению ИИ в их отраслях. От базовых принципов до конкретных инструментов для роста бизнеса.
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#e4eef9] top-[3661px] w-[1098px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:93">
+      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#ffffff] top-[3615px] w-[1098px] z-30" style={{ color: '#ffffff', fontWeight: 100 }} data-node-id="20:93">
         Разрабатываем дорожную карту цифровой трансформации с конкретными KPI и сроками окупаемости. Помогаем выбрать приоритетные направления и избежать дорогостоящих ошибок.
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#e4eef9] top-[4068px] w-[1098px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:96">
+      <p className="absolute font-['Montserrat',sans-serif] h-[141px] leading-[normal] left-[417px] text-[31px] text-[#ffffff] top-[4022px] w-[1098px] z-30" style={{ color: '#ffffff', fontWeight: 100 }} data-node-id="20:96">
         Создаем интеллектуальных агентов и системы автоматизации под конкретные задачи вашего бизнеса. От ассистентов делопроизводства до уникальных инновационных разработок.
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#e4eef9] top-[3141px] w-[735px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:91">
+      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#ffffff] top-[3090px] w-[735px] z-30" style={{ color: '#ffffff', fontWeight: 600 }} data-node-id="20:91">
         Корпоративное обучение искусственному интеллекту
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#e4eef9] top-[3548px] w-[735px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:94">
+      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#ffffff] top-[3497px] w-[735px] z-30" style={{ color: '#ffffff', fontWeight: 600 }} data-node-id="20:94">
         Стратегия внедрения ИИ
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#e4eef9] top-[3955px] w-[735px] z-30" style={{ color: '#e4eef9', fontWeight: 100 }} data-node-id="20:97">
+      <p className="absolute font-['Montserrat',sans-serif] h-[95px] leading-[normal] left-[417px] text-[34px] text-[#ffffff] top-[3904px] w-[735px] z-30" style={{ color: '#ffffff', fontWeight: 600 }} data-node-id="20:97">
         Разработка ИИ-решений
       </p>
       <p className="absolute font-['Montserrat',sans-serif] font-thin h-[122px] leading-[normal] left-[344.5px] text-[100px] text-[#071a31] text-center top-[1994px] translate-x-[-50%] w-[193px] z-20" data-node-id="19:76">
@@ -384,6 +483,10 @@ export default function FigmaDesktopCanvas() {
       <div className="absolute h-[315px] left-[277px] top-[5033px] w-[448px] z-10" data-name="Kamaz-01 1" data-node-id="27:123">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject2} />
       </div>
+      {/* Проект 3: АВТОВАЗ */}
+      <div className="absolute h-[315px] left-[277px] top-[5400px] w-[448px] z-10" data-name="Avtovaz-01 1" data-node-id="28:126">
+        <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject3} />
+      </div>
       <div className="absolute h-[199px] left-[406px] top-[5829px] w-[177px] z-10" data-name="rosstandart-seeklogo 1" data-node-id="29:129">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject4} />
       </div>
@@ -400,20 +503,26 @@ export default function FigmaDesktopCanvas() {
           <img alt="" className="block max-w-none size-full" src={imgVector} />
         </div>
       </div>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[52px] leading-[59px] text-[30px] text-[#e4eef9] top-[9692px] w-[500px] z-20" data-node-id="55:117" style={{ left: "calc(50% - 544px)" }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[52px] leading-[39px] text-[20px] text-[#ffffff] top-[9844px] w-[500px] z-20" data-node-id="55:117" style={{ left: "calc(50% - 544px)" }}>
         © 2025 | {' '}
         <Link 
           to="/privacy-policy" 
-          className="underline hover:text-white transition-colors"
-          style={{ color: '#e4eef9' }}
+          className="underline hover:text-[#ffffff] transition-colors"
+          style={{ color: '#ffffff' }}
         >
           Политика конфиденциальности
         </Link>
       </p>
       {/* z-60: Карусель команды */}
-      <div className="absolute h-[1035px] left-0 top-[7208px] w-[1920px] overflow-hidden z-60">
+      <div 
+        className="absolute h-[1035px] left-0 top-[7208px] w-[1920px] overflow-hidden z-60 cursor-grab active:cursor-grabbing"
+        onMouseDown={handleTeamMouseDown}
+        onMouseMove={handleTeamMouseMove}
+        onMouseUp={handleTeamMouseUp}
+        onMouseLeave={handleTeamMouseUp}
+      >
         <div 
-          className="flex items-center gap-[5px] h-full"
+          className="flex items-center gap-0 h-full"
           style={{
             transform: `translateX(${teamSlidePosition}px)`,
             transition: 'none'
@@ -426,13 +535,13 @@ export default function FigmaDesktopCanvas() {
               className="flex-shrink-0"
               style={{
                 height: '1035px',
-                width: '4096px'
+                width: '6000px'
               }}
             >
               <img 
                 src={imgTeam} 
                 alt="Команда"
-                className="w-full h-full object-cover pointer-events-none"
+                className="w-full h-full object-contain pointer-events-none"
               />
             </div>
           ))}
