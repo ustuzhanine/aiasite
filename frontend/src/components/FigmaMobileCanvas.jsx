@@ -1,16 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import imgAvtovaz1 from '/assets/avtovaz.jpg';
-import img202509262107411 from '/assets/160c49f1c00c7624603b63d4d0fcc48e05e658fa.png';
-import imgGazprom011 from '/assets/Gazprom-01.png';
-import imgKamaz011 from '/assets/Kamaz-01.png';
-import imgRosstandartSeeklogo1 from '/assets/rosstandart-seeklogo.png';
 import imgAiaLogo from '/assets/AIA logo.png';
 import imgGroup from '/assets/1ebc5b838508a18566e427e580ee4292afefc6f7.svg';
 import imgGroup1 from '/assets/cc2c17757a3f6bc8c3a501729b1a7711be8c131d.svg';
 import imgVector from '/assets/cfa8a1f87fed6f20c8816f821e60e45b80e03158.svg';
 import FigmaContactForm from './FigmaContactForm';
-import img2 from '/assets/Команда карусель.png';
+
+// Проекты
+import imgProject1 from '/assets/partners/1.png';
+import imgProject2 from '/assets/partners/2.png';
+import imgProject3 from '/assets/partners/3.png';
+import imgProject4 from '/assets/partners/4.png';
+
+// Партнеры
+import imgKamaz from '/assets/partners/kamaz-logo-2000x2500.png';
+import imgRosstandart from '/assets/partners/rosstandart-seeklogo.png';
+import imgGoznak from '/assets/partners/GOZNAK.jpg';
+import imgLukoil from '/assets/partners/LUKOIL.jpg';
+import imgFRI from '/assets/partners/FRI-01.png';
+import imgFroo from '/assets/partners/froo-01.png';
+import imgDeecrypto from '/assets/partners/deecrypto-01.png';
+import imgIshkola from '/assets/partners/ishkola-01.png';
+import imgShkolaPrava from '/assets/partners/shkola prava-01.png';
+import imgSkillfactory from '/assets/partners/skillfactory-01.png';
+import imgZnanie from '/assets/partners/znanie-01.png';
+import imgTEngriLab from '/assets/partners/TEngriLab.png';
+import imgLanit from '/assets/partners/Lanit_Монтажная область 1.png';
+import imgRosAtom from '/assets/partners/RosAtom_Монтажная область 1.png';
+import imgWRF from '/assets/partners/WRF_Монтажная область 1.png';
+import imgInno from '/assets/partners/inno_Монтажная область 1.png';
+import imgRanhigs from '/assets/partners/РАНХиГС лого-01.png';
+import imgRST2 from '/assets/partners/РСТ.png';
+import imgRUTMIIT from '/assets/partners/РУТ МИИТ.png';
+import imgAdminTO from '/assets/partners/Администрация ТО.jpg';
+import imgAssotsKazakhstan from '/assets/partners/Ассоциации когнитивных городов Казахстана_Монтажная область 1.jpg';
+import imgPoznanie2 from '/assets/partners/Познание_Монтажная область 1.jpg';
+import imgFondPodderzhki from '/assets/partners/Фонд поддержки_Монтажная область 1.png';
+import imgPMYEF from '/assets/partners/pmyef-logo.dpi_75-1.jpg';
+import imgSMILEONLINE from '/assets/partners/SMILEONLINE.svg';
+import imgLogo2 from '/assets/partners/logo_2.svg';
+import imgGroup97 from '/assets/partners/Group_97.png';
+import img20_35 from '/assets/partners/20.35_Монтажная область 1.png';
+import imgAlrii from '/assets/partners/АЛРИИ_ЛОГО.png';
+import img445 from '/assets/partners/445a88bb7b4f9205d08db61192616c587c3dc7a0.png';
+import img625 from '/assets/partners/62584929477fdda025677ac82848448ff5332577.png';
+import imgD6c7 from '/assets/partners/d6c7d365_59ea_45f3_9f78_96bb2bf6a4ef.png';
+
+// Команда
+import imgTeam from '/assets/team/team.png';
 
 export default function FigmaMobileCanvas() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,6 +55,19 @@ export default function FigmaMobileCanvas() {
   const mobileMenuToggleRef = useRef(null);
   const [scale, setScale] = useState(Math.min(window.innerWidth / 781, 1)); // 781px - ширина мобильного макета Figma
   const [currentStatSlide, setCurrentStatSlide] = useState(0);
+  const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
+
+  // Массив всех партнеров
+  const partners = [
+    imgRosstandart, imgGoznak, imgLukoil, imgFRI, 
+    imgFroo, imgDeecrypto, imgIshkola,
+    imgShkolaPrava, imgSkillfactory, imgZnanie, imgTEngriLab,
+    imgLanit, imgRosAtom, imgWRF, imgInno,
+    imgRanhigs, imgRST2, imgRUTMIIT,
+    imgAdminTO, imgAssotsKazakhstan, imgPoznanie2, imgFondPodderzhki,
+    imgPMYEF, imgSMILEONLINE, imgLogo2, imgGroup97, img20_35,
+    imgKamaz, imgAlrii, img445, img625, imgD6c7
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,6 +91,15 @@ export default function FigmaMobileCanvas() {
     const interval = setInterval(() => {
       setCurrentStatSlide((prev) => (prev === 4 ? 0 : prev + 1));
     }, 3000); // Переключение каждые 3 секунды
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Автоматическое движение слайдера партнеров слева направо
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPartnerSlidePosition((prev) => prev - 5); // Скорость увеличена в 2 раза
+    }, 30); // Обновление каждые 30мс для плавности
 
     return () => clearInterval(interval);
   }, []);
@@ -79,7 +138,7 @@ export default function FigmaMobileCanvas() {
   }, []);
 
   // Для карусели команды, дублируем изображение
-  const teamCarouselImages = Array(2).fill(img2);
+  const teamCarouselImages = Array(2).fill(imgTeam);
 
   return (
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
@@ -188,7 +247,7 @@ export default function FigmaMobileCanvas() {
         <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
       </div>
         <div className="absolute h-[169px] left-[480px] top-[7297px] w-[300px]" data-name="avtovaz 1" data-node-id="48:162">
-        <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgAvtovaz1} />
+        <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject3} />
         </div>
       <div className="absolute bg-[#071a31] h-[923px] left-0 top-[13254px] w-[781px] z-10" data-node-id="48:165" />
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] left-[135px] text-[#071a31] text-[50px] top-[1383px] translate-y-[-50%] w-[219px] z-10" data-node-id="48:169">
@@ -262,10 +321,6 @@ export default function FigmaMobileCanvas() {
       <p className="absolute font-['Montserrat',sans-serif] font-bold h-[107px] leading-[normal] left-[135px] text-[#e4eef9] text-[34px] top-[4934px] w-[527px]" data-node-id="52:330" style={{ color: '#e4eef9' }}>
           Разработка ИИ-решений
         </p>
-      {/* Статистика - Карусель */}
-      <div className="absolute h-[293px] left-0 top-[3057px] w-[781px] overflow-hidden z-10" data-name="Снимок экрана 2025-09-26 в 21.07.41 1" data-node-id="48:199">
-        <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={img202509262107411} />
-      </div>
       
       {/* Контейнер карусели статистики */}
       <div className="absolute left-0 top-[2658px] w-[781px] h-[450px] z-20 overflow-hidden">
@@ -327,7 +382,7 @@ export default function FigmaMobileCanvas() {
         <p className="leading-[normal]">почта</p>
       </div>
       <div className="absolute h-[213px] left-[478px] top-[5731px] w-[303px]" data-name="Gazprom-01 1" data-node-id="48:217">
-        <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgGazprom011} />
+        <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject1} />
         </div>
       <p className="absolute font-['Montserrat',sans-serif] font-thin h-[426px] leading-[normal] left-[135px] text-[#071a31] text-[31px] top-[6077px] w-[603px]" data-node-id="48:218">
           Разработали и провели образовательную программу по применению искусственного интеллекта в нефтегазовой индустрии. Обучили 50+ топ-менеджеров компании практическому использованию ИИ-технологий для оптимизации бизнес-процессов.
@@ -360,14 +415,50 @@ export default function FigmaMobileCanvas() {
           Наша образовательная деятельность официально лицензирована:
         </p>
       <div className="absolute h-[199px] left-[488px] top-[6524px] w-[283px]" data-name="Kamaz-01 1" data-node-id="48:228">
-        <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgKamaz011} />
+        <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject2} />
       </div>
       <div className="absolute h-[121px] left-[576px] top-[8023px] w-[108px]" data-name="rosstandart-seeklogo 1" data-node-id="48:229">
-        <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgRosstandartSeeklogo1} />
+        <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject4} />
       </div>
       <div className="absolute font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] left-[135px] text-[#071a31] text-[50px] top-[2992px] translate-y-[-50%] w-[683px]" data-node-id="49:323">
         <p className="leading-[normal]">Наши партнёры</p>
+      </div>
+      
+      {/* Слайдер партнеров - Мобильная версия */}
+      <div className="absolute left-0 top-[3150px] w-[781px] h-[200px] overflow-hidden z-20">
+        <div 
+          className="flex items-center gap-[60px] h-full"
+          style={{
+            transform: `translateX(${partnerSlidePosition}px)`,
+            transition: 'none'
+          }}
+        >
+          {/* Дублируем массив партнеров для бесконечного эффекта */}
+          {[...partners, ...partners, ...partners].map((partner, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0 flex items-center justify-center"
+              style={{
+                height: '120px',
+                width: 'auto'
+              }}
+            >
+              <img 
+                src={partner} 
+                alt={`Partner ${index}`}
+                className="max-h-full w-auto object-contain"
+                style={{ 
+                  filter: 'grayscale(0%)',
+                  opacity: 0.9,
+                  height: '120px',
+                  width: 'auto'
+                }}
+              />
+            </div>
+          ))}
         </div>
+      </div>
+      
       <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#e4eef9] text-[30px] top-[13797px] w-[569px]" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)" }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
@@ -409,7 +500,7 @@ export default function FigmaMobileCanvas() {
       {/* Контейнер для карусели с overflow-hidden */}
       <div className="absolute h-[1035px] left-0 top-[7208px] w-full overflow-hidden">
         <div className="absolute h-[1035px] left-[167px] top-0 w-[4096px]" data-name="Команда карусель 2" data-node-id="61:138">
-          <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={img2} />
+          <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgTeam} />
         </div>
       </div>
       <div id="mobile-contact-form" className="absolute left-0 top-[11300px] w-full">
