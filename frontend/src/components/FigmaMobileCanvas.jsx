@@ -309,7 +309,7 @@ export default function FigmaMobileCanvas() {
       <div className="absolute bg-white h-[14014px] left-0 top-0 w-full z-0" data-node-id="52:324" />
       
       {/* Hero видео с эффектом матового стекла - Mobile */}
-      <div className="absolute h-[1001px] left-0 top-0 w-[781px] overflow-hidden z-10" data-name="Hero Video Background Mobile" data-node-id="48:163">
+      <div className="absolute h-[1251px] left-0 top-0 w-[781px] overflow-hidden z-10" data-name="Hero Video Background Mobile" data-node-id="48:163">
         {/* Слой 1: Видео с размытием */}
         <video 
           autoPlay 
@@ -380,7 +380,7 @@ export default function FigmaMobileCanvas() {
         </p>
       {/* Кнопка "связаться с нами" - поверх всех слоёв hero */}
       <div 
-        className="absolute left-[39px] top-[1074px] w-[713px] h-[90px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-50 cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
+        className="absolute left-[50%] translate-x-[-50%] top-[1074px] w-[713px] h-[90px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-50 cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
         data-node-id="48:187"
         onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
