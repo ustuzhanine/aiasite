@@ -52,6 +52,7 @@ import imgTeam from '/assets/team/team.png';
 export default function FigmaDesktopCanvas() {
   const [scale, setScale] = useState(Math.min(window.innerWidth / 1920, 1));
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
+  const [teamSlidePosition, setTeamSlidePosition] = useState(0);
 
   // Массив всех партнеров
   const partners = [
@@ -91,6 +92,15 @@ export default function FigmaDesktopCanvas() {
     return () => clearInterval(interval);
   }, []);
 
+  // Автоматическое движение слайдера команды справа налево
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTeamSlidePosition((prev) => prev - 3); // Плавное движение
+    }, 30); // Обновление каждые 30мс для плавности
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSmoothScroll = (e) => {
     e.preventDefault();
     const targetId = e.target.getAttribute('href').substring(1);
@@ -103,9 +113,6 @@ export default function FigmaDesktopCanvas() {
       });
     }
   };
-
-  // Для карусели команды, дублируем изображение
-  const teamCarouselImages = Array(2).fill(imgTeam);
 
   return (
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
@@ -141,7 +148,7 @@ export default function FigmaDesktopCanvas() {
       {/* Header (шапка сайта) - поверх видео */}
       <div className="absolute bg-[#071a31] h-[95px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[-14px] w-[1920px] z-30" data-node-id="1:5" />
       <div className="absolute bg-[#071a31] h-[385px] left-0 shadow-[9px_9px_16px_-1px_rgba(0,0,0,0.25)] top-[9398px] w-[1920px] z-10" data-node-id="21:109" />
-      <div className="absolute bg-[#071a31] h-[416px] left-0 rounded-[19px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[6424px] w-[311px] z-10" data-node-id="40:135" />
+      <div className="absolute bg-[#071a31] h-[416px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[6457px] w-[288px] z-10 flex-shrink-0" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="40:135" />
       <div className="absolute h-[41px] left-[415px] top-[20px] w-[63px] z-50" data-name="HEAD_NEW_55-01_1x" data-node-id="1:4" style={{ aspectRatio: '63/41' }}>
         <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgAiaLogo} />
       </div>
@@ -405,8 +412,30 @@ export default function FigmaDesktopCanvas() {
       </p>
       {/* z-60: Карусель команды */}
       <div className="absolute h-[1035px] left-0 top-[7208px] w-[1920px] overflow-hidden z-60">
-        <div className="absolute h-[1035px] left-[167px] top-0 w-[4096px]" data-name="Команда карусель 2" data-node-id="61:138">
-          <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgTeam} />
+        <div 
+          className="flex items-center gap-[5px] h-full"
+          style={{
+            transform: `translateX(${teamSlidePosition}px)`,
+            transition: 'none'
+          }}
+        >
+          {/* Дублируем изображение для бесконечного эффекта */}
+          {[...Array(5)].map((_, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0"
+              style={{
+                height: '1035px',
+                width: '4096px'
+              }}
+            >
+              <img 
+                src={imgTeam} 
+                alt="Команда"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </div>
+          ))}
         </div>
       </div>
       </div>

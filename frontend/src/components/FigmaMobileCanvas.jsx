@@ -56,6 +56,7 @@ export default function FigmaMobileCanvas() {
   const [scale, setScale] = useState(Math.min(window.innerWidth / 781, 1)); // 781px - ширина мобильного макета Figma
   const [currentStatSlide, setCurrentStatSlide] = useState(0);
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
+  const [teamSlidePosition, setTeamSlidePosition] = useState(0);
 
   // Массив всех партнеров
   const partners = [
@@ -104,6 +105,15 @@ export default function FigmaMobileCanvas() {
     return () => clearInterval(interval);
   }, []);
 
+  // Автоматическое движение слайдера команды справа налево
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTeamSlidePosition((prev) => prev - 3); // Плавное движение
+    }, 30); // Обновление каждые 30мс для плавности
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSmoothScroll = (e) => {
     e.preventDefault();
     const targetId = e.target.getAttribute('href').substring(1);
@@ -136,9 +146,6 @@ export default function FigmaMobileCanvas() {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
-
-  // Для карусели команды, дублируем изображение
-  const teamCarouselImages = Array(2).fill(imgTeam);
 
   return (
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
@@ -462,7 +469,7 @@ export default function FigmaMobileCanvas() {
       <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#e4eef9] text-[30px] top-[13797px] w-[569px]" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)" }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
-      <div className="absolute bg-[#071a31] h-[1113px] left-0 rounded-[19px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[8733px] w-[91px]" data-node-id="48:166" />
+      <div className="absolute bg-[#071a31] h-[1035px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[8800px] w-[51px]" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="48:166" />
       <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#e4eef9] text-[30px] top-[13726px] w-[205px]" data-node-id="48:179" style={{ left: "calc(50% - 258.5px)" }}>
         адрес
       </p>
@@ -497,10 +504,32 @@ export default function FigmaMobileCanvas() {
           <img alt="" className="block max-w-none size-full" src={imgGroup} />
         </div>
       </div>
-      {/* Контейнер для карусели с overflow-hidden */}
-      <div className="absolute h-[1035px] left-0 top-[7208px] w-full overflow-hidden">
-        <div className="absolute h-[1035px] left-[167px] top-0 w-[4096px]" data-name="Команда карусель 2" data-node-id="61:138">
-          <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgTeam} />
+      {/* Контейнер для карусели команды с overflow-hidden */}
+      <div className="absolute h-[1035px] left-0 top-[10200px] w-full overflow-hidden z-20">
+        <div 
+          className="flex items-center gap-[5px] h-full"
+          style={{
+            transform: `translateX(${teamSlidePosition}px)`,
+            transition: 'none'
+          }}
+        >
+          {/* Дублируем изображение для бесконечного эффекта */}
+          {[...Array(5)].map((_, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0"
+              style={{
+                height: '1035px',
+                width: '4096px'
+              }}
+            >
+              <img 
+                src={imgTeam} 
+                alt="Команда"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div id="mobile-contact-form" className="absolute left-0 top-[11300px] w-full">
