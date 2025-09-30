@@ -50,14 +50,33 @@ import imgD6c7 from '/assets/partners/d6c7d365_59ea_45f3_9f78_96bb2bf6a4ef.png';
 // Команда
 import imgTeam from '/assets/team/team.png';
 
+// Фотографии
+const photoImages = [
+  '/assets/photo/2025-09-30 16.44.20.jpg',
+  '/assets/photo/2025-09-30 16.44.36.jpg',
+  '/assets/photo/2025-09-30 16.44.41.jpg',
+  '/assets/photo/2025-09-30 16.44.47.jpg',
+  '/assets/photo/2025-09-30 16.44.51.jpg',
+  '/assets/photo/2025-09-30 16.44.58.jpg',
+  '/assets/photo/2025-09-30 16.47.56.jpg',
+  '/assets/photo/2025-09-30 16.48.04.jpg',
+  '/assets/photo/2025-09-30 16.48.10.jpg',
+  '/assets/photo/2025-09-30 16.48.15.jpg',
+  '/assets/photo/2025-09-30 16.48.21.jpg',
+  '/assets/photo/2025-09-30 16.48.27.jpg',
+  '/assets/photo/2025-09-30 16.48.34.jpg',
+];
+
 export default function FigmaDesktopCanvas() {
   const [scale, setScale] = useState(Math.min(window.innerWidth / 1920, 1));
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
+  const [photoSlidePosition, setPhotoSlidePosition] = useState(0);
   
   // Состояния для перетаскивания мышью
   const [isDraggingPartners, setIsDraggingPartners] = useState(false);
   const [isDraggingTeam, setIsDraggingTeam] = useState(false);
+  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
   const [startX, setStartX] = useState(0);
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
   const autoScrollTimeoutRef = useRef(null);
@@ -131,6 +150,26 @@ export default function FigmaDesktopCanvas() {
     return () => clearInterval(interval);
   }, [isAutoScrollPaused]);
 
+  // Автоматическое движение слайдера фото слева направо
+  useEffect(() => {
+    if (isAutoScrollPaused) return;
+    
+    const interval = setInterval(() => {
+      setPhotoSlidePosition((prev) => {
+        // Рассчитываем ширину одного набора фото (13 фото * ~400px ширина с gap)
+        const photoSetWidth = photoImages.length * 405; // ширина фото + 5px gap
+        
+        // Когда прошли один полный набор, сбрасываем позицию для бесшовного зацикливания
+        if (prev <= -photoSetWidth) {
+          return 0;
+        }
+        return prev - 2;
+      });
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isAutoScrollPaused]);
+
   // Обработчики для перетаскивания карусели партнеров мышью
   const handlePartnersMouseDown = (e) => {
     setIsDraggingPartners(true);
@@ -181,6 +220,31 @@ export default function FigmaDesktopCanvas() {
     }, 2000);
   };
 
+  // Обработчики для перетаскивания карусели фото мышью
+  const handlePhotoMouseDown = (e) => {
+    setIsDraggingPhoto(true);
+    setStartX(e.clientX);
+    setIsAutoScrollPaused(true);
+    if (autoScrollTimeoutRef.current) clearTimeout(autoScrollTimeoutRef.current);
+    e.preventDefault();
+  };
+
+  const handlePhotoMouseMove = (e) => {
+    if (!isDraggingPhoto) return;
+    const currentX = e.clientX;
+    const diff = currentX - startX;
+    setPhotoSlidePosition((prev) => prev + diff);
+    setStartX(currentX);
+  };
+
+  const handlePhotoMouseUp = () => {
+    setIsDraggingPhoto(false);
+    // Возобновляем автопрокрутку через 2 секунды
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrollPaused(false);
+    }, 2000);
+  };
+
   const handleSmoothScroll = (e) => {
     e.preventDefault();
     const targetId = e.target.getAttribute('href').substring(1);
@@ -196,11 +260,11 @@ export default function FigmaDesktopCanvas() {
 
   return (
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
-      <div className="relative w-[1920px] h-[9783px]" data-name="pc" data-node-id="1:8" style={{ 
+      <div className="relative w-[1920px] h-[10383px]" data-name="pc" data-node-id="1:8" style={{ 
         zoom: scale
       }}>
       {/* Белый фон под всем сайтом */}
-      <div className="absolute bg-white h-[9783px] left-0 top-0 w-full z-0" data-node-id="14:67" />
+      <div className="absolute bg-white h-[10383px] left-0 top-0 w-full z-0" data-node-id="14:67" />
       
       {/* Hero видео с эффектом матового стекла */}
       <div className="absolute h-[995px] left-0 top-0 w-[1920px] overflow-hidden z-10" data-name="Hero Video Background" data-node-id="1:6">
@@ -231,16 +295,16 @@ export default function FigmaDesktopCanvas() {
       <div className="fixed h-[41px] top-[17.5px] w-[63px] z-[110] left-1/2" data-name="HEAD_NEW_55-01_1x" data-node-id="1:4" style={{ aspectRatio: '63/41', marginLeft: 'calc(-960px + 415px)' }}>
         <img alt="" className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" src={imgAiaLogo} />
       </div>
-      <div className="absolute bg-[#071a31] h-[385px] left-0 shadow-[9px_9px_16px_-1px_rgba(0,0,0,0.25)] top-[9550px] w-[1920px] z-10" data-node-id="21:109" />
+      <div className="absolute bg-[#071a31] h-[385px] left-0 shadow-[9px_9px_16px_-1px_rgba(0,0,0,0.25)] top-[10150px] w-[1920px] z-10" data-node-id="21:109" />
       {/* Логотип в футере */}
-      <div className="absolute left-[150px] top-[9630px] h-[75px] w-auto z-20">
+      <div className="absolute left-[150px] top-[10230px] h-[75px] w-auto z-20">
         <img alt="AIA Logo" className="h-full w-auto object-contain" src={imgFooterLogo} />
       </div>
       <div className="absolute bg-[#071a31] h-[416px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[6457px] w-[288px] z-10 flex-shrink-0" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="40:135" />
       <div 
         className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:57" 
-        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1300px)' }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1180px)' }}
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">о нас</p>
@@ -312,25 +376,25 @@ export default function FigmaDesktopCanvas() {
       <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[7105px] translate-y-[-50%] w-[789px] z-10" data-node-id="40:136" style={{ left: "calc(50% - 542px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Наша команда</p>
       </div>
-      <div id="contact" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[184px] justify-center leading-[0] text-[#071a31] text-[40px] top-[8458px] translate-y-[-50%] w-[1026px] z-10" data-node-id="20:99" style={{ left: "calc(50% - 542px)", fontWeight: 100, scrollMarginTop: '100px' }}>
+      <div id="contact" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[184px] justify-center leading-[0] text-[#071a31] text-[40px] top-[9058px] translate-y-[-50%] w-[1026px] z-10" data-node-id="20:99" style={{ left: "calc(50% - 542px)", fontWeight: 100, scrollMarginTop: '100px' }}>
         <p className="leading-[normal]">Напишите нам, и мы найдем оптимальное ИИ-решение для вашего бизнеса</p>
       </div>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9600px] w-[815px] z-20" data-node-id="21:111" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10200px] w-[815px] z-20" data-node-id="21:111" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9656px] w-[815px] z-20" data-node-id="21:117" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10256px] w-[815px] z-20" data-node-id="21:117" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         +7 (495) 123-47-05
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9712px] w-[815px] z-20" data-node-id="21:118" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10312px] w-[815px] z-20" data-node-id="21:118" style={{ left: "calc(50% - 186px)", color: '#ffffff', fontWeight: 100 }}>
         in@aiagency.ru
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9656px] w-[205px] z-20" data-node-id="21:114" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10256px] w-[205px] z-20" data-node-id="21:114" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         телефон
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9600px] w-[205px] z-20" data-node-id="21:116" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10200px] w-[205px] z-20" data-node-id="21:116" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         адрес
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[9712px] w-[317px] z-20" data-node-id="21:115" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
+      <p className="absolute font-['Montserrat',sans-serif] h-[71px] leading-[39px] text-[20px] text-[#ffffff] top-[10312px] w-[317px] z-20" data-node-id="21:115" style={{ left: "calc(50% - 544px)", color: '#ffffff', fontWeight: 600 }}>
         электронная почта
       </p>
       <div className="absolute font-['Montserrat',sans-serif] h-[622px] leading-[normal] left-[411px] text-[#071a31] text-[35px] top-[1324px] w-[1283px] z-10" style={{ fontWeight: 100 }} data-node-id="14:72">
@@ -343,7 +407,7 @@ export default function FigmaDesktopCanvas() {
       <div 
         className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:62" 
-        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1420px)' }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1300px)' }}
         onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">услуги</p>
@@ -351,7 +415,7 @@ export default function FigmaDesktopCanvas() {
       <div 
         className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:63" 
-        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1540px)' }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1420px)' }}
         onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">проекты</p>
@@ -359,15 +423,23 @@ export default function FigmaDesktopCanvas() {
       <div 
         className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:65" 
-        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1660px)' }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1540px)' }}
         onClick={() => document.getElementById('team')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">команда</p>
       </div>
       <div 
         className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
+        data-node-id="header-photo" 
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1650px)' }}
+        onClick={() => document.getElementById('photo')?.scrollIntoView({ behavior: 'smooth' })}
+      >
+        <p className="leading-[normal]">фото</p>
+      </div>
+      <div 
+        className="fixed flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[20px] text-center text-[#ffffff] top-[38px] translate-x-[-50%] translate-y-[-50%] w-[123px] z-[110] cursor-pointer hover:opacity-80 transition-opacity left-1/2" 
         data-node-id="14:64" 
-        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1780px)' }}
+        style={{ color: '#ffffff', fontWeight: 100, marginLeft: 'calc(-960px + 1760px)' }}
         onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="leading-[normal]">контакты</p>
@@ -442,7 +514,7 @@ export default function FigmaDesktopCanvas() {
         обученных специалистов
       </p>
       {/* Форма контактов */}
-      <div id="contacts" className="absolute left-0 top-[8550px] w-full">
+      <div id="contacts" className="absolute left-0 top-[9150px] w-full">
         <FigmaContactForm />
       </div>
       {/* Проект 1: Газпром - темный текст на белом фоне */}
@@ -503,7 +575,7 @@ export default function FigmaDesktopCanvas() {
           <img alt="" className="block max-w-none size-full" src={imgVector} />
         </div>
       </div>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[52px] leading-[39px] text-[20px] text-[#ffffff] top-[9844px] w-[500px] z-20" data-node-id="55:117" style={{ left: "calc(50% - 544px)" }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[52px] leading-[39px] text-[20px] text-[#ffffff] top-[10444px] w-[500px] z-20" data-node-id="55:117" style={{ left: "calc(50% - 544px)" }}>
         © 2025 | {' '}
         <Link 
           to="/privacy-policy" 
@@ -542,6 +614,50 @@ export default function FigmaDesktopCanvas() {
                 src={imgTeam} 
                 alt="Команда"
                 className="w-full h-full object-contain pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Раздел ФОТО */}
+      <div id="photo" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[8320px] translate-y-[-50%] w-[789px] z-10" data-node-id="photo-title" style={{ left: "calc(50% - 542px)", fontWeight: 100 }}>
+        <p className="leading-[normal]">Фото</p>
+      </div>
+      
+      {/* Слайдер фотографий */}
+      <div 
+        className="absolute left-0 top-[8400px] w-[1920px] h-[500px] overflow-hidden z-20 cursor-grab active:cursor-grabbing"
+        onMouseDown={handlePhotoMouseDown}
+        onMouseMove={handlePhotoMouseMove}
+        onMouseUp={handlePhotoMouseUp}
+        onMouseLeave={handlePhotoMouseUp}
+      >
+        <div 
+          className="flex items-center gap-[5px] h-full"
+          style={{
+            transform: `translateX(${photoSlidePosition}px)`,
+            transition: 'none'
+          }}
+        >
+          {/* Дублируем массив фото для бесконечного эффекта */}
+          {[...photoImages, ...photoImages, ...photoImages].map((photo, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0"
+              style={{
+                height: '440px',
+                width: 'auto'
+              }}
+            >
+              <img 
+                src={photo} 
+                alt={`Фото ${index + 1}`}
+                className="h-full w-auto object-cover pointer-events-none"
+                style={{ 
+                  height: '440px',
+                  width: 'auto'
+                }}
               />
             </div>
           ))}

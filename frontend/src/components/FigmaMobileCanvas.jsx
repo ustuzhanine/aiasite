@@ -50,6 +50,23 @@ import imgD6c7 from '/assets/partners/d6c7d365_59ea_45f3_9f78_96bb2bf6a4ef.png';
 // Команда
 import imgTeam from '/assets/team/team.png';
 
+// Фотографии
+const photoImages = [
+  '/assets/photo/2025-09-30 16.44.20.jpg',
+  '/assets/photo/2025-09-30 16.44.36.jpg',
+  '/assets/photo/2025-09-30 16.44.41.jpg',
+  '/assets/photo/2025-09-30 16.44.47.jpg',
+  '/assets/photo/2025-09-30 16.44.51.jpg',
+  '/assets/photo/2025-09-30 16.44.58.jpg',
+  '/assets/photo/2025-09-30 16.47.56.jpg',
+  '/assets/photo/2025-09-30 16.48.04.jpg',
+  '/assets/photo/2025-09-30 16.48.10.jpg',
+  '/assets/photo/2025-09-30 16.48.15.jpg',
+  '/assets/photo/2025-09-30 16.48.21.jpg',
+  '/assets/photo/2025-09-30 16.48.27.jpg',
+  '/assets/photo/2025-09-30 16.48.34.jpg',
+];
+
 export default function FigmaMobileCanvas() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef(null);
@@ -58,10 +75,12 @@ export default function FigmaMobileCanvas() {
   const [currentStatSlide, setCurrentStatSlide] = useState(0);
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
+  const [photoSlidePosition, setPhotoSlidePosition] = useState(0);
   
   // Состояния для свайпа/перетаскивания
   const [isDraggingPartners, setIsDraggingPartners] = useState(false);
   const [isDraggingTeam, setIsDraggingTeam] = useState(false);
+  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
   const [startX, setStartX] = useState(0);
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
   const autoScrollTimeoutRef = useRef(null);
@@ -144,6 +163,26 @@ export default function FigmaMobileCanvas() {
     return () => clearInterval(interval);
   }, [isAutoScrollPaused]);
 
+  // Автоматическое движение слайдера фото слева направо (мобильная версия)
+  useEffect(() => {
+    if (isAutoScrollPaused) return;
+    
+    const interval = setInterval(() => {
+      setPhotoSlidePosition((prev) => {
+        // Рассчитываем ширину одного набора фото (13 фото * ~305px ширина с gap)
+        const photoSetWidth = photoImages.length * 305; // ширина фото + 5px gap для мобильной
+        
+        // Когда прошли один полный набор, сбрасываем позицию для бесшовного зацикливания
+        if (prev <= -photoSetWidth) {
+          return 0;
+        }
+        return prev - 2;
+      });
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isAutoScrollPaused]);
+
   // Обработчики для свайпа карусели партнеров
   const handlePartnersTouchStart = (e) => {
     setIsDraggingPartners(true);
@@ -186,6 +225,30 @@ export default function FigmaMobileCanvas() {
 
   const handleTeamTouchEnd = () => {
     setIsDraggingTeam(false);
+    // Возобновляем автопрокрутку через 2 секунды
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrollPaused(false);
+    }, 2000);
+  };
+
+  // Обработчики для свайпа карусели фото
+  const handlePhotoTouchStart = (e) => {
+    setIsDraggingPhoto(true);
+    setStartX(e.touches[0].clientX);
+    setIsAutoScrollPaused(true);
+    if (autoScrollTimeoutRef.current) clearTimeout(autoScrollTimeoutRef.current);
+  };
+
+  const handlePhotoTouchMove = (e) => {
+    if (!isDraggingPhoto) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+    setPhotoSlidePosition((prev) => prev + diff);
+    setStartX(currentX);
+  };
+
+  const handlePhotoTouchEnd = () => {
+    setIsDraggingPhoto(false);
     // Возобновляем автопрокрутку через 2 секунды
     autoScrollTimeoutRef.current = setTimeout(() => {
       setIsAutoScrollPaused(false);
@@ -302,11 +365,11 @@ export default function FigmaMobileCanvas() {
         style={{ 
           zoom: scale,
           marginTop: '72px',
-          height: '14014px'
+          height: '14864px'
         }}
       >
       {/* Белый фон под всем сайтом - Mobile */}
-      <div className="absolute bg-white h-[14014px] left-0 top-0 w-full z-0" data-node-id="52:324" />
+      <div className="absolute bg-white h-[14864px] left-0 top-0 w-full z-0" data-node-id="52:324" />
       
       {/* Hero видео с эффектом матового стекла - Mobile */}
       <div className="absolute h-[1251px] left-0 top-0 w-[781px] overflow-hidden z-10" data-name="Hero Video Background Mobile" data-node-id="48:163">
@@ -333,9 +396,9 @@ export default function FigmaMobileCanvas() {
         <div className="absolute h-[169px] left-[480px] top-[7297px] w-[300px]" data-name="avtovaz 1" data-node-id="48:162">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject3} />
         </div>
-      <div className="absolute bg-[#071a31] h-[893px] left-0 top-[13121px] w-[781px] z-10" data-node-id="48:165" />
+      <div className="absolute bg-[#071a31] h-[893px] left-0 top-[13971px] w-[781px] z-10" data-node-id="48:165" />
       {/* Логотип между формой и футером */}
-      <div className="absolute left-[50%] translate-x-[-50%] top-[12931px] h-[120px] w-auto z-20">
+      <div className="absolute left-[50%] translate-x-[-50%] top-[13781px] h-[120px] w-auto z-20">
         <img alt="AIA Logo" className="h-full w-auto object-contain" src={imgFooterLogoMobile} />
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] left-[135px] text-[#071a31] text-[50px] top-[1383px] translate-y-[-50%] w-[219px] z-10" data-node-id="48:169">
@@ -353,16 +416,16 @@ export default function FigmaMobileCanvas() {
       <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[119px] justify-center leading-[0] text-[#071a31] text-[50px] top-[10047px] translate-y-[-50%] w-[603px]" data-node-id="48:173" style={{ left: "calc(50% - 264.5px)" }}>
           <p className="leading-[normal]">Наша команда</p>
         </div>
-      <p id="contact" className="absolute font-['Montserrat',sans-serif] font-medium h-[223px] leading-[normal] text-[#071a31] text-[40px] top-[11300px] w-[560px]" data-node-id="48:174" style={{ left: "calc(50% - 264.5px)", scrollMarginTop: '150px' }}>
+      <p id="contact" className="absolute font-['Montserrat',sans-serif] font-medium h-[223px] leading-[normal] text-[#071a31] text-[40px] top-[12150px] w-[560px]" data-node-id="48:174" style={{ left: "calc(50% - 264.5px)", scrollMarginTop: '150px' }}>
           Напишите нам, и мы найдем оптимальное ИИ-решение для вашего бизнеса
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[13280px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[14130px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
           +7 (495) 123-47-05
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[108px] leading-[59px] text-[#ffffff] text-[50px] top-[13472px] w-[575px] z-20" data-node-id="48:177" style={{ left: "calc(50% - 264.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[108px] leading-[59px] text-[#ffffff] text-[50px] top-[14322px] w-[575px] z-20" data-node-id="48:177" style={{ left: "calc(50% - 264.5px)", color: '#ffffff' }}>
           in@aiagency.ru
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[13401px] w-[317px] z-20" data-node-id="48:180" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14251px] w-[317px] z-20" data-node-id="48:180" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
           электронная почта
         </p>
         <div className="absolute font-['Montserrat',sans-serif] font-thin h-[1016px] leading-[normal] left-[135px] text-[#071a31] text-[30px] top-[1506px] w-[582px]" data-node-id="48:181">
@@ -531,17 +594,17 @@ export default function FigmaMobileCanvas() {
         </div>
       </div>
       
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#ffffff] text-[30px] top-[13664px] w-[569px] z-20" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#ffffff] text-[30px] top-[14514px] w-[569px] z-20" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
       <div className="absolute bg-[#071a31] h-[1035px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[8800px] w-[51px]" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="48:166" />
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[13593px] w-[205px] z-20" data-node-id="48:179" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14443px] w-[205px] z-20" data-node-id="48:179" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
         адрес
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[13209px] w-[205px] z-20" data-node-id="48:178" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14059px] w-[205px] z-20" data-node-id="48:178" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         телефон
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[13906px] w-[205px] z-20" data-node-id="55:49" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14756px] w-[205px] z-20" data-node-id="55:49" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         © 2025
       </p>
       <div className="absolute contents inset-[96.85%_83.79%_2.25%_8.07%]" data-name="Group" data-node-id="12:12">
@@ -595,7 +658,51 @@ export default function FigmaMobileCanvas() {
           ))}
         </div>
       </div>
-      <div id="mobile-contact-form" className="absolute left-0 top-[11600px] w-full">
+
+      {/* Раздел ФОТО - Mobile */}
+      <div id="photo" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[11320px] translate-y-[-50%] w-[603px]" data-node-id="photo-title-mobile" style={{ left: "calc(50% - 264.5px)" }}>
+        <p className="leading-[normal]">Фото</p>
+      </div>
+      
+      {/* Слайдер фотографий - Mobile */}
+      <div 
+        className="absolute left-0 top-[11400px] w-[781px] h-[600px] overflow-hidden z-20 touch-pan-y"
+        onTouchStart={handlePhotoTouchStart}
+        onTouchMove={handlePhotoTouchMove}
+        onTouchEnd={handlePhotoTouchEnd}
+      >
+        <div 
+          className="flex items-center gap-[5px] h-full"
+          style={{
+            transform: `translateX(${photoSlidePosition}px)`,
+            transition: 'none'
+          }}
+        >
+          {/* Дублируем массив фото для бесконечного эффекта */}
+          {[...photoImages, ...photoImages, ...photoImages].map((photo, index) => (
+            <div 
+              key={index}
+              className="flex-shrink-0"
+              style={{
+                height: '600px',
+                width: 'auto'
+              }}
+            >
+              <img 
+                src={photo} 
+                alt={`Фото ${index + 1}`}
+                className="h-full w-auto object-cover pointer-events-none"
+                style={{ 
+                  height: '600px',
+                  width: 'auto'
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div id="mobile-contact-form" className="absolute left-0 top-[12450px] w-full">
         <FigmaContactForm isMobile={true} />
       </div>
       </div>
