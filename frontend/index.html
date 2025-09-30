@@ -1,13 +1,102 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Агентство Искусственного Интеллекта | Обучение и внедрение ИИ для бизнеса</title>
+    <meta name="description" content="Ведущая консалтинговая компания по ИИ. Обучаем топ-менеджеров, разрабатываем стратегии внедрения и создаём ИИ-решения. 7 лет экспертизы, 61 проект, партнёры: Газпром, КАМАЗ, АВТОВАЗ, Росстандарт." />
+    <meta name="keywords" content="искусственный интеллект, обучение ИИ, внедрение ИИ, консалтинг ИИ, корпоративное обучение, ИИ для бизнеса, машинное обучение, цифровая трансформация, разработка ИИ решений, AI консалтинг, нейросети, автоматизация бизнеса" />
+    <meta name="author" content="Агентство Искусственного Интеллекта" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aiagency.ru" />
+    
+    <!-- Language and Region -->
+    <meta http-equiv="content-language" content="ru" />
+    <meta name="geo.region" content="RU-MOW" />
+    <meta name="geo.placename" content="Москва" />
+    <meta name="geo.position" content="55.751244;37.618423" />
+    
+    <!-- Contact Information -->
+    <meta name="contact" content="in@aiagency.ru" />
+    <meta name="copyright" content="© 2025 Агентство Искусственного Интеллекта" />
+    
+    <!-- Open Graph / Facebook / VK -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aiagency.ru" />
+    <meta property="og:title" content="Агентство Искусственного Интеллекта | Обучение и внедрение ИИ" />
+    <meta property="og:description" content="Ведущая консалтинговая компания по ИИ. Обучаем топ-менеджеров, разрабатываем стратегии внедрения и создаём ИИ-решения. 7 лет экспертизы, 61 проект." />
+    <meta property="og:image" content="https://aiagency.ru/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Агентство Искусственного Интеллекта - Обучение и внедрение ИИ для бизнеса" />
+    <meta property="og:site_name" content="AIA Agency" />
+    <meta property="og:locale" content="ru_RU" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://aiagency.ru" />
+    <meta name="twitter:title" content="Агентство Искусственного Интеллекта | Обучение и внедрение ИИ" />
+    <meta name="twitter:description" content="Ведущая консалтинговая компания по ИИ. Обучаем топ-менеджеров, разрабатываем стратегии внедрения и создаём ИИ-решения." />
+    <meta name="twitter:image" content="https://aiagency.ru/assets/og-image.png" />
+    <meta name="twitter:image:alt" content="Агентство Искусственного Интеллекта - Обучение и внедрение ИИ для бизнеса" />
+    <meta name="twitter:creator" content="@aiagency" />
+    
+    <!-- Mobile Meta Tags -->
+    <meta name="theme-color" content="#071a31" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AIA Agency" />
+    
+    <!-- Windows Tiles -->
+    <meta name="msapplication-TileColor" content="#071a31" />
+    <meta name="msapplication-TileImage" content="/android-chrome-192x192.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Агентство Искусственного Интеллекта",
+      "alternateName": "AIA Agency",
+      "url": "https://aiagency.ru",
+      "logo": "https://aiagency.ru/assets/AIA-logo.png",
+      "description": "Ведущая консалтинговая компания в области искусственного интеллекта, которая помогает крупному бизнесу извлекать реальную прибыль из ИИ-технологий",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ул. Дубнинская, д. 75Б, стр. 2",
+        "addressLocality": "Москва",
+        "postalCode": "119049",
+        "addressCountry": "RU"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+7-495-123-47-05",
+        "contactType": "customer service",
+        "email": "in@aiagency.ru",
+        "areaServed": "RU",
+        "availableLanguage": "Russian"
+      },
+      "sameAs": [
+        "https://vk.com/aiagency",
+        "https://t.me/aiagency"
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
