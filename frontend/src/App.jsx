@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import FigmaDesktopCanvas from './components/FigmaDesktopCanvas';
 import FigmaMobileCanvas from './components/FigmaMobileCanvas';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 function App() {
   // Десктопная версия для всех ПК (>1024px), мобильная для планшетов и меньше (<=1024px)
@@ -23,9 +25,14 @@ function App() {
   console.log(`[App] Rendering: ${isMobile ? 'MOBILE' : 'DESKTOP'} version (width: ${window.innerWidth}px)`);
 
   return (
-    <div className="w-full h-full overflow-x-hidden bg-white">
-      {isMobile ? <FigmaMobileCanvas /> : <FigmaDesktopCanvas />}
-    </div>
+    <Routes>
+      <Route path="/" element={
+        <div className="w-full h-full overflow-x-hidden bg-white">
+          {isMobile ? <FigmaMobileCanvas /> : <FigmaDesktopCanvas />}
+        </div>
+      } />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+    </Routes>
   );
 }
 
