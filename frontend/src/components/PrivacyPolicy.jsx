@@ -2,21 +2,22 @@ import React from 'react';
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-white font-['Montserrat',sans-serif]">
+    <div className="min-h-screen bg-white font-['Montserrat',sans-serif] flex flex-col">
       {/* Шапка */}
-      <header className="bg-[#071a31] py-8 px-4 md:px-16">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-white text-4xl md:text-5xl font-bold mb-4">
+      <header className="bg-[#071a31] py-12" style={{ paddingLeft: '80px', paddingRight: '80px' }}>
+        <div className="max-w-[1200px] mx-auto">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: '#ffffff' }}>
             Политика конфиденциальности
           </h1>
-          <p className="text-[#e4eef9] text-lg font-thin">
+          <p className="text-lg font-thin" style={{ color: '#ffffff', opacity: 0.9 }}>
             АО «Агентство Искусственного Интеллекта»
           </p>
         </div>
       </header>
 
       {/* Основной контент */}
-      <main className="max-w-5xl mx-auto px-4 md:px-16 py-12">
+      <main className="py-16" style={{ paddingLeft: '80px', paddingRight: '80px' }}>
+        <div className="max-w-[1200px] mx-auto">
         <section className="mb-8">
           <h2 className="text-[#071a31] text-3xl font-semibold mb-4">1. Общие положения</h2>
           <p className="text-[#071a31] text-lg font-thin leading-relaxed mb-4">
@@ -167,20 +168,22 @@ export default function PrivacyPolicy() {
         </section>
 
         {/* Кнопка возврата */}
-        <div className="text-center mt-12">
+        <div className="text-center" style={{ marginTop: '80px', marginBottom: '80px' }}>
           <button
             onClick={() => window.history.back()}
-            className="bg-[#071a31] text-white px-8 py-4 rounded-full text-xl font-medium hover:opacity-90 transition-opacity cursor-pointer"
+            className="bg-[#071a31] text-white px-10 py-4 rounded-[22px] text-xl font-medium hover:opacity-90 transition-all hover:shadow-lg cursor-pointer"
+            style={{ color: '#ffffff' }}
           >
             Вернуться назад
           </button>
         </div>
+        </div>
       </main>
 
       {/* Футер */}
-      <footer className="bg-[#071a31] text-white py-8 px-4 md:px-16 mt-16">
-        <div className="max-w-5xl mx-auto text-center">
-          <p className="text-[#e4eef9] font-thin">
+      <footer className="bg-[#071a31] py-16 mt-auto" style={{ width: '100%' }}>
+        <div className="text-center" style={{ paddingLeft: '80px', paddingRight: '80px' }}>
+          <p className="font-thin text-lg" style={{ color: '#ffffff', opacity: 0.9 }}>
             © 2025 АО «Агентство Искусственного Интеллекта». Все права защищены.
           </p>
         </div>
