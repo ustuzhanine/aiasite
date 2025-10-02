@@ -335,7 +335,7 @@ export default function FigmaDesktopCanvas() {
       >
         <p className="leading-[normal]">о нас</p>
       </div>
-      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1311px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100, scrollMarginTop: '100px' }} data-node-id="14:71">
+      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1220px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100, scrollMarginTop: '100px' }} data-node-id="14:71">
         <p className="leading-[normal]">О нас</p>
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[2487px] translate-y-[-50%] w-[683px] z-10" style={{ fontWeight: 100 }} data-node-id="49:276">

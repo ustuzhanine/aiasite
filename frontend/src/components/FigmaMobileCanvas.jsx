@@ -319,7 +319,7 @@ export default function FigmaMobileCanvas() {
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
       {/* Контейнер для шапки и меню - двигаются вместе */}
       <div 
-        className="fixed left-0 w-full z-[100] transition-all duration-300"
+        className="fixed left-0 w-full z-[10002] transition-all duration-300"
         style={{ 
           zoom: scale,
           top: isMenuOpen ? '0' : '-320px'
@@ -345,7 +345,13 @@ export default function FigmaMobileCanvas() {
             className="absolute font-['Montserrat',sans-serif] font-extralight h-[46px] leading-[normal] text-right text-[#ffffff] text-[40px] top-[160px] cursor-pointer hover:opacity-80 transition-opacity" 
             style={{ right: '51.633px', paddingRight: '0px' }}
             onClick={() => {
-              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+              const targetElement = document.getElementById('services');
+              if (targetElement) {
+                window.scrollTo({
+                  top: targetElement.offsetTop,
+                  behavior: 'smooth',
+                });
+              }
               setIsMenuOpen(false);
             }}
             data-node-id="55:111"
