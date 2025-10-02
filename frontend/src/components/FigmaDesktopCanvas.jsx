@@ -65,6 +65,8 @@ const photoImages = [
   '/assets/photo/2025-09-30 16.48.21.jpg',
   '/assets/photo/2025-09-30 16.48.27.jpg',
   '/assets/photo/2025-09-30 16.48.34.jpg',
+  '/assets/photo/photo_2025-10-02 08.39.15.jpeg',
+  '/assets/photo/photo_2025-10-02 13.43.21.jpeg',
 ];
 
 export default function FigmaDesktopCanvas() {
