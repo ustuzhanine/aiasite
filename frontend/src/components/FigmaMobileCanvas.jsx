@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import imgAiaLogo from '/assets/AIA logo.png';
 import imgFooterLogoMobile from '/assets/logo-footer-mobile.jpg';
 import imgGroup from '/assets/1ebc5b838508a18566e427e580ee4292afefc6f7.svg';
 import imgGroup1 from '/assets/cc2c17757a3f6bc8c3a501729b1a7711be8c131d.svg';
 import imgVector from '/assets/cfa8a1f87fed6f20c8816f821e60e45b80e03158.svg';
-import FigmaContactForm from './FigmaContactForm';
 
 // Проекты
 import imgProject1 from '/assets/partners/1.png';
 import imgProject2 from '/assets/partners/2.png';
-import imgProject3 from '/assets/partners/3.png';
+import imgProject3 from '/assets/partners/MIKL.png';
 import imgProject4 from '/assets/partners/4.png';
 
 // Партнеры
@@ -33,12 +31,12 @@ import imgInno from '/assets/partners/inno_Монтажная область 1.p
 import imgRanhigs from '/assets/partners/РАНХиГС лого-01.png';
 import imgRST2 from '/assets/partners/РСТ.png';
 import imgRUTMIIT from '/assets/partners/РУТ МИИТ.png';
-import imgAdminTO from '/assets/partners/Администрация ТО.jpg';
+import imgAdminTO from '/assets/partners/omsk.png';
 import imgAssotsKazakhstan from '/assets/partners/Ассоциации когнитивных городов Казахстана_Монтажная область 1.jpg';
 import imgPoznanie2 from '/assets/partners/Познание_Монтажная область 1.jpg';
 import imgFondPodderzhki from '/assets/partners/Фонд поддержки_Монтажная область 1.png';
 import imgPMYEF from '/assets/partners/pmyef-logo.dpi_75-1.jpg';
-import imgSMILEONLINE from '/assets/partners/SMILEONLINE.svg';
+import imgSMILEONLINE from '/assets/partners/SMILEONLINE.png';
 import imgLogo2 from '/assets/partners/logo_2.svg';
 import imgGroup97 from '/assets/partners/Group_97.png';
 import img20_35 from '/assets/partners/20.35_Монтажная область 1.png';
@@ -65,18 +63,20 @@ const photoImages = [
   '/assets/photo/2025-09-30 16.48.21.jpg',
   '/assets/photo/2025-09-30 16.48.27.jpg',
   '/assets/photo/2025-09-30 16.48.34.jpg',
+  '/assets/photo/photo_2025-10-02 08.39.15.jpeg',
 ];
 
 export default function FigmaMobileCanvas() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef(null);
   const mobileMenuToggleRef = useRef(null);
+
   const [scale, setScale] = useState(Math.min(window.innerWidth / 781, 1)); // 781px - ширина мобильного макета Figma
   const [currentStatSlide, setCurrentStatSlide] = useState(0);
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
   const [photoSlidePosition, setPhotoSlidePosition] = useState(0);
-  
+
   // Состояния для свайпа/перетаскивания
   const [isDraggingPartners, setIsDraggingPartners] = useState(false);
   const [isDraggingTeam, setIsDraggingTeam] = useState(false);
@@ -146,12 +146,12 @@ export default function FigmaMobileCanvas() {
   // Автоматическое движение слайдера команды справа налево
   useEffect(() => {
     if (isAutoScrollPaused) return;
-    
+
     const interval = setInterval(() => {
       setTeamSlidePosition((prev) => {
         // Ширина одного изображения команды (6000px без gap)
         const teamImageWidth = 6000;
-        
+
         // Когда прошли одно изображение, сбрасываем позицию для бесшовного зацикливания
         if (prev <= -teamImageWidth) {
           return 0;
@@ -166,12 +166,12 @@ export default function FigmaMobileCanvas() {
   // Автоматическое движение слайдера фото слева направо (мобильная версия)
   useEffect(() => {
     if (isAutoScrollPaused) return;
-    
+
     const interval = setInterval(() => {
       setPhotoSlidePosition((prev) => {
-        // Рассчитываем ширину одного набора фото (13 фото * ~305px ширина с gap)
+        // Рассчитываем ширину одного набора фото (14 фото * ~305px ширина с gap)
         const photoSetWidth = photoImages.length * 305; // ширина фото + 5px gap для мобильной
-        
+
         // Когда прошли один полный набор, сбрасываем позицию для бесшовного зацикливания
         if (prev <= -photoSetWidth) {
           return 0;
@@ -269,6 +269,7 @@ export default function FigmaMobileCanvas() {
     setIsMenuOpen(false); // Закрываем меню после клика по ссылке
   };
 
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (
@@ -323,7 +324,7 @@ export default function FigmaMobileCanvas() {
             }}
             data-node-id="55:111"
           >
-            услуги
+            деятельность
           </div>
           <div 
             className="absolute font-['Montserrat',sans-serif] font-extralight h-[46px] leading-[normal] text-right text-[#ffffff] text-[40px] top-[250px] cursor-pointer hover:opacity-80 transition-opacity" 
@@ -362,14 +363,14 @@ export default function FigmaMobileCanvas() {
         className="relative w-[781px]" 
         data-name="mobile" 
         data-node-id="48:160" 
-        style={{ 
+        style={{
           zoom: scale,
           marginTop: '72px',
-          height: '14864px'
+          height: '15200px'
         }}
       >
       {/* Белый фон под всем сайтом - Mobile */}
-      <div className="absolute bg-white h-[14864px] left-0 top-0 w-full z-0" data-node-id="52:324" />
+      <div className="absolute bg-white h-[15200px] left-0 top-0 w-full z-0" data-node-id="52:324" />
       
       {/* Hero видео с эффектом матового стекла - Mobile */}
       <div className="absolute h-[1251px] left-0 top-0 w-[781px] overflow-hidden z-10" data-name="Hero Video Background Mobile" data-node-id="48:163">
@@ -393,39 +394,99 @@ export default function FigmaMobileCanvas() {
         {/* Слой 2: Матовое стекло (frosted glass effect) */}
         <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
       </div>
-        <div className="absolute h-[169px] left-[480px] top-[7297px] w-[300px]" data-name="avtovaz 1" data-node-id="48:162">
+        <div className="absolute h-[169px] left-[480px] top-[8800px] w-[300px]" data-name="mikl 1" data-node-id="48:162">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject3} />
         </div>
-      <div className="absolute bg-[#071a31] h-[893px] left-0 top-[13971px] w-[781px] z-10" data-node-id="48:165" />
+      <div className="absolute bg-[#071a31] h-[1050px] left-0 top-[14121px] w-[781px] z-10" data-node-id="48:165" />
       {/* Логотип между формой и футером */}
-      <div className="absolute left-[50%] translate-x-[-50%] top-[13781px] h-[120px] w-auto z-20">
+      <div className="absolute left-[50%] translate-x-[-50%] top-[13931px] h-[120px] w-auto z-20">
         <img alt="AIA Logo" className="h-full w-auto object-contain" src={imgFooterLogoMobile} />
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] left-[135px] text-[#071a31] text-[50px] top-[1383px] translate-y-[-50%] w-[219px] z-10" data-node-id="48:169">
           <p className="leading-[normal]">О нас</p>
         </div>
-      <div id="services" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[3455px] translate-y-[-50%] w-[468px] z-10" data-node-id="48:170" style={{ left: "calc(50% - 255.5px)" }}>
-          <p className="leading-[normal]">Наши услуги</p>
+      <div id="services" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[3455px] translate-y-[-50%] w-[700px] z-10" data-node-id="48:170" style={{ left: "calc(50% - 255.5px)" }}>
+          <p className="leading-[normal]">Направления деятельности</p>
         </div>
-      <div id="projects" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[5638px] translate-y-[-50%] w-[468px] z-10" data-node-id="48:171" style={{ left: "calc(50% - 255.5px)" }}>
-          <p className="leading-[normal]">Наши проекты</p>
+      <div id="current-projects" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[5580px] translate-y-[-50%] w-[500px] z-10" data-node-id="48:170-new" style={{ left: "calc(50% - 255.5px)" }}>
+          <p className="leading-[normal]">Текущие проекты</p>
         </div>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[159px] leading-[normal] text-[#071a31] text-[50px] top-[8745px] w-[603px] z-10" data-node-id="48:172" style={{ left: "calc(50% - 264.5px)" }}>
+        
+        {/* Текущие проекты - 3 карточки Mobile */}
+        <div className="absolute bg-[#071a31] h-[420px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[5693px] w-[695px]" data-node-id="mobile-current-1" />
+        <div className="absolute bg-[#071a31] h-[420px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[6155px] w-[695px]" data-node-id="mobile-current-2" />
+        <div className="absolute bg-[#071a31] h-[420px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[6617px] w-[695px]" data-node-id="mobile-current-3" />
+        
+        <p className="absolute font-['Montserrat',sans-serif] font-bold h-[70px] leading-[normal] left-[135px] text-[#ffffff] text-[30px] top-[5720px] w-[527px]" data-node-id="mob-curr-1-title" style={{ color: '#ffffff' }}>
+          Программа повышения квалификации по ИИ
+        </p>
+        <p className="absolute font-['Montserrat',sans-serif] font-thin h-[220px] leading-[normal] left-[135px] text-[#ffffff] text-[26px] top-[5805px] w-[527px]" data-node-id="mob-curr-1-desc" style={{ color: '#ffffff' }}>
+          Практический курс «Искусственный интеллект: внедрение и управление» для руководителей и специалистов. Обучаем запускать ИИ-проекты с нуля.
+        </p>
+        <a
+          href="https://neirolab-ai.ru/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute left-[135px] top-[6035px] w-[250px] h-[40px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+          style={{ textDecoration: 'none' }}
+        >
+          <p className="font-['Montserrat',sans-serif] text-[18px] text-[#ffffff] leading-[normal]" style={{ fontWeight: 300 }}>
+            Перейти на сайт →
+          </p>
+        </a>
+        
+        <p className="absolute font-['Montserrat',sans-serif] font-bold h-[70px] leading-[normal] left-[135px] text-[#ffffff] text-[30px] top-[6182px] w-[527px]" data-node-id="mob-curr-2-title" style={{ color: '#ffffff' }}>
+          Платформа цифрового бессмертия
+        </p>
+        <p className="absolute font-['Montserrat',sans-serif] font-thin h-[220px] leading-[normal] left-[135px] text-[#ffffff] text-[26px] top-[6267px] w-[527px]" data-node-id="mob-curr-2-desc" style={{ color: '#ffffff' }}>
+          Инновационный проект по созданию цифровых копий личности. Сохранение памяти, опыта и знаний человека с помощью технологий ИИ.
+        </p>
+        <a
+          href="https://virperson.ru/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute left-[135px] top-[6497px] w-[250px] h-[40px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+          style={{ textDecoration: 'none' }}
+        >
+          <p className="font-['Montserrat',sans-serif] text-[18px] text-[#ffffff] leading-[normal]" style={{ fontWeight: 300 }}>
+            Перейти на сайт →
+          </p>
+        </a>
+        
+        <p className="absolute font-['Montserrat',sans-serif] font-bold h-[90px] leading-[normal] left-[135px] text-[#ffffff] text-[30px] top-[6644px] w-[527px]" data-node-id="mob-curr-3-title" style={{ color: '#ffffff' }}>
+          Центр дополнительного энергетического образования
+        </p>
+        <p className="absolute font-['Montserrat',sans-serif] font-thin h-[200px] leading-[normal] left-[135px] text-[#ffffff] text-[26px] top-[6749px] w-[527px]" data-node-id="mob-curr-3-desc" style={{ color: '#ffffff' }}>
+          Образовательная платформа для специалистов энергетической отрасли. Комплексные программы обучения и повышения квалификации.
+        </p>
+        <a
+          href="http://цдэс.рф/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute left-[135px] top-[6959px] w-[250px] h-[40px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+          style={{ textDecoration: 'none' }}
+        >
+          <p className="font-['Montserrat',sans-serif] text-[18px] text-[#ffffff] leading-[normal]" style={{ fontWeight: 300 }}>
+            Перейти на сайт →
+          </p>
+        </a>
+      
+      <div id="projects" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[7220px] translate-y-[-50%] w-[468px] z-10" data-node-id="48:171" style={{ left: "calc(50% - 255.5px)" }}>
+          <p className="leading-[normal]">Успешные кейсы</p>
+        </div>
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[159px] leading-[normal] text-[#071a31] text-[50px] top-[10275px] w-[603px] z-10" data-node-id="48:172" style={{ left: "calc(50% - 264.5px)" }}>
           Лицензии и Сертификаты
         </p>
-      <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[119px] justify-center leading-[0] text-[#071a31] text-[50px] top-[10047px] translate-y-[-50%] w-[603px]" data-node-id="48:173" style={{ left: "calc(50% - 264.5px)" }}>
+      <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[119px] justify-center leading-[0] text-[#071a31] text-[50px] top-[11577px] translate-y-[-50%] w-[603px]" data-node-id="48:173" style={{ left: "calc(50% - 264.5px)" }}>
           <p className="leading-[normal]">Наша команда</p>
         </div>
-      <p id="contact" className="absolute font-['Montserrat',sans-serif] font-medium h-[223px] leading-[normal] text-[#071a31] text-[40px] top-[12150px] w-[560px]" data-node-id="48:174" style={{ left: "calc(50% - 264.5px)", scrollMarginTop: '150px' }}>
-          Напишите нам, и мы найдем оптимальное ИИ-решение для вашего бизнеса
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[14200px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+          +7 (915) 085-95-94
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[14130px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
-          +7 (495) 123-47-05
-        </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[108px] leading-[59px] text-[#ffffff] text-[50px] top-[14322px] w-[575px] z-20" data-node-id="48:177" style={{ left: "calc(50% - 264.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[108px] leading-[59px] text-[#ffffff] text-[50px] top-[14450px] w-[575px] z-20" data-node-id="48:177" style={{ left: "calc(50% - 264.5px)", color: '#ffffff' }}>
           in@aiagency.ru
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14251px] w-[317px] z-20" data-node-id="48:180" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14390px] w-[317px] z-20" data-node-id="48:180" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
           электронная почта
         </p>
         <div className="absolute font-['Montserrat',sans-serif] font-thin h-[1016px] leading-[normal] left-[135px] text-[#071a31] text-[30px] top-[1506px] w-[582px]" data-node-id="48:181">
@@ -442,15 +503,42 @@ export default function FigmaMobileCanvas() {
           эксперты по обучению и внедрению ИИ-технологий
         </p>
       {/* Кнопка "связаться с нами" - поверх всех слоёв hero */}
-      <div 
-        className="absolute left-[50%] translate-x-[-50%] top-[1074px] w-[713px] h-[90px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-50 cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center" 
+      <a
+        href="mailto:in@aiagency.ru?subject=Запрос на консультацию по ИИ&body=Здравствуйте!%0A%0AИнтересуют ваши услуги в области искусственного интеллекта.%0A%0AПожалуйста, расскажите подробнее о ваших решениях."
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => {
+          console.log('Кнопка "связаться с нами" нажата в мобильной версии');
+
+          // Показываем контакты сразу - самый надежный способ
+          const contactInfo = `Наши контакты:
+
+📧 Email: in@aiagency.ru
+📱 Телефон: +7 (915) 085-95-94
+
+Нажмите Ctrl+C (Cmd+C на Mac) чтобы скопировать контакты и свяжитесь с нами удобным способом!`;
+
+          // Копируем email в буфер обмена
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText('in@aiagency.ru').then(() => {
+              alert('Email скопирован в буфер обмена!\n\n📧 in@aiagency.ru\n📱 +7 (915) 085-95-94');
+            }).catch(() => {
+              alert(contactInfo);
+            });
+          } else {
+            alert(contactInfo);
+          }
+
+          e.preventDefault();
+        }}
+        className="absolute left-[50%] translate-x-[-50%] top-[1074px] w-[713px] h-[90px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+        style={{ textDecoration: 'none' }}
         data-node-id="48:187"
-        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
         <p className="font-['Montserrat',sans-serif] font-thin text-[40px] text-[#ffffff] leading-[normal]" data-node-id="48:189" style={{ color: '#ffffff' }}>
           связаться с нами
         </p>
-      </div>
+      </a>
         <div className="absolute bg-[#071a31] h-[580px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[3539px] w-[695px]" data-node-id="48:190" />
         <div className="absolute bg-[#071a31] h-[609px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[4153px] w-[695px]" data-node-id="52:325" />
         <div className="absolute bg-[#071a31] h-[580px] left-[43px] rounded-[14px] shadow-[9px_9px_16px_-4px_rgba(30,30,30,0.55)] top-[4806px] w-[695px]" data-node-id="52:328" />
@@ -511,52 +599,53 @@ export default function FigmaMobileCanvas() {
           ))}
         </div>
       </div>
-      <div className="absolute h-[213px] left-[478px] top-[5731px] w-[303px]" data-name="Gazprom-01 1" data-node-id="48:217">
+      <div className="absolute h-[213px] left-[478px] top-[7280px] w-[303px]" data-name="Gazprom-01 1" data-node-id="48:217">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject1} />
         </div>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[426px] leading-[normal] left-[135px] text-[#071a31] text-[31px] top-[6077px] w-[603px]" data-node-id="48:218">
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[426px] leading-[normal] left-[135px] text-[#071a31] text-[31px] top-[7607px] w-[603px]" data-node-id="48:218">
           Разработали и провели образовательную программу по применению искусственного интеллекта в нефтегазовой индустрии. Обучили 50+ топ-менеджеров компании практическому использованию ИИ-технологий для оптимизации бизнес-процессов.
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[135px] text-[#071a31] text-[31px] top-[6888px] w-[603px]" data-node-id="48:219">
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[135px] text-[#071a31] text-[31px] top-[8418px] w-[603px]" data-node-id="48:219">
           Внедрили интеллектуальную систему для оптимизации производственных процессов и прогнозирования потребности в запчастях. Решение помогает повысить эффективность производства и снизить простои.
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[7614px] w-[603px]" data-node-id="53:331">
-          Создали специализированную программу обучения сотрудников применению искусственного интеллекта в автомобильной промышленности. Программа адаптирована под специфику отрасли и задачи компании.
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[9144px] w-[603px]" data-node-id="53:331">
+          Принимаем активное участие в работе платформы по внедрению инноваций и развитию кооперации. Взаимодействуем с крупными корпорациями, МСП, образовательными и научными организациями.
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[8305px] w-[603px]" data-node-id="53:333">
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[388px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[9865px] w-[603px]" data-node-id="53:333">
           Совместно с Росстандартом разработали 15 государственных стандартов в области искусственного интеллекта, заложив нормативную основу для развития ИИ-технологий в России.
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[503px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[9206px] w-[603px]" data-node-id="48:222">
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[503px] leading-[normal] left-[126px] text-[#071a31] text-[31px] top-[10736px] w-[603px]" data-node-id="48:222">
         Лицензия на образовательную деятельность    Регистрационный номер: Л035-01298-77/01264001   Выдана: Департаментом образования и науки города Москвы   Дата: 24 июня 2024 года   Статус: действующая - Право на дополнительное профессиональное образование - Партнерство с Росстандартом в разработке государственных стандартов по ИИ - Благодарственные письма от крупных корпораций Вся наша деятельность ведется в полном соответствии с требованиями российского законодательства.
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[184px] leading-[normal] left-[135px] text-[#071a31] text-[34px] top-[5933px] w-[453px]" data-node-id="48:223">
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[184px] leading-[normal] left-[135px] text-[#071a31] text-[34px] top-[7463px] w-[453px]" data-node-id="48:223">
           Корпоративное обучение ИИ для нефтегазовой отрасли
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[135px] text-[#071a31] text-[34px] top-[6739px] w-[453px]" data-node-id="48:224">
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[135px] text-[#071a31] text-[34px] top-[8269px] w-[453px]" data-node-id="48:224">
           ИИ-система для производственной оптимизации
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[7465px] w-[453px]" data-node-id="53:332">
-          Образовательная программа по ИИ для автопрома
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[8995px] w-[453px]" data-node-id="53:332">
+          Участие в платформе МИК
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[8156px] w-[453px]" data-node-id="53:334">
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[209px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[9716px] w-[453px]" data-node-id="53:334">
           Разработка государственных стандартов ИИ
         </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[136px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[8958px] w-[449px]" data-node-id="48:227">
+      <p className="absolute font-['Montserrat',sans-serif] font-medium h-[136px] leading-[normal] left-[126px] text-[#071a31] text-[34px] top-[10488px] w-[449px]" data-node-id="48:227">
           Наша образовательная деятельность официально лицензирована:
         </p>
-      <div className="absolute h-[199px] left-[488px] top-[6524px] w-[283px]" data-name="Kamaz-01 1" data-node-id="48:228">
+      <div className="absolute h-[199px] left-[488px] top-[8054px] w-[283px]" data-name="Kamaz-01 1" data-node-id="48:228">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject2} />
       </div>
-      <div className="absolute h-[121px] left-[576px] top-[8023px] w-[108px]" data-name="rosstandart-seeklogo 1" data-node-id="48:229">
+      <div className="absolute h-[121px] left-[576px] top-[9603px] w-[108px]" data-name="rosstandart-seeklogo 1" data-node-id="48:229">
         <img alt="" className="absolute inset-0 max-w-none object-center object-contain pointer-events-none size-full" src={imgProject4} />
       </div>
       <div className="absolute font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] left-[135px] text-[#071a31] text-[50px] top-[2992px] translate-y-[-50%] w-[683px]" data-node-id="49:323">
-        <p className="leading-[normal]">Наши партнёры</p>
+        <p className="leading-[normal]">Наши клиенты</p>
       </div>
       
       {/* Слайдер партнеров - Мобильная версия */}
-      <div 
-        className="absolute left-0 top-[3150px] w-[781px] h-[200px] overflow-hidden z-20 touch-pan-y"
+      <div
+        className="absolute left-0 top-[3150px] w-[781px] h-[200px] overflow-hidden z-[100]"
+        style={{ touchAction: 'pan-x' }}
         onTouchStart={handlePartnersTouchStart}
         onTouchMove={handlePartnersTouchMove}
         onTouchEnd={handlePartnersTouchEnd}
@@ -594,17 +683,17 @@ export default function FigmaMobileCanvas() {
         </div>
       </div>
       
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#ffffff] text-[30px] top-[14514px] w-[569px] z-20" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[324px] leading-[59px] text-[#ffffff] text-[30px] top-[14700px] w-[569px] z-20" data-node-id="48:175" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         119049, РФ, г. Москва, ул. Дубнинская, д. 75Б, стр. 2
       </p>
-      <div className="absolute bg-[#071a31] h-[1035px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[8800px] w-[51px]" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="48:166" />
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14443px] w-[205px] z-20" data-node-id="48:179" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
+      <div className="absolute bg-[#071a31] h-[1035px] left-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] top-[10330px] w-[51px]" style={{ borderRadius: '0 19px 19px 0' }} data-node-id="48:166" />
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14620px] w-[205px] z-20" data-node-id="48:179" style={{ left: "calc(50% - 258.5px)", color: '#ffffff' }}>
         адрес
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14059px] w-[205px] z-20" data-node-id="48:178" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14150px] w-[205px] z-20" data-node-id="48:178" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         телефон
       </p>
-      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14756px] w-[205px] z-20" data-node-id="55:49" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p className="absolute font-['Montserrat',sans-serif] font-bold h-[71px] leading-[59px] text-[#ffffff] text-[30px] top-[14950px] w-[205px] z-20" data-node-id="55:49" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
         © 2025
       </p>
       <div className="absolute contents inset-[96.85%_83.79%_2.25%_8.07%]" data-name="Group" data-node-id="12:12">
@@ -626,8 +715,9 @@ export default function FigmaMobileCanvas() {
         </div>
       </div>
       {/* Контейнер для карусели команды с overflow-hidden */}
-      <div 
-        className="absolute h-[1035px] left-0 top-[10200px] w-full overflow-hidden z-20 touch-pan-y"
+      <div
+        className="absolute h-[1035px] left-0 top-[11680px] w-full overflow-hidden z-[100]"
+        style={{ touchAction: 'pan-x' }}
         onTouchStart={handleTeamTouchStart}
         onTouchMove={handleTeamTouchMove}
         onTouchEnd={handleTeamTouchEnd}
@@ -660,18 +750,19 @@ export default function FigmaMobileCanvas() {
       </div>
 
       {/* Раздел ФОТО - Mobile */}
-      <div id="photo" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[11320px] translate-y-[-50%] w-[603px]" data-node-id="photo-title-mobile" style={{ left: "calc(50% - 264.5px)" }}>
+      <div id="photo" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[46px] justify-center leading-[0] text-[#071a31] text-[50px] top-[12800px] translate-y-[-50%] w-[603px]" data-node-id="photo-title-mobile" style={{ left: "calc(50% - 264.5px)" }}>
         <p className="leading-[normal]">Фото</p>
       </div>
-      
+
       {/* Слайдер фотографий - Mobile */}
-      <div 
-        className="absolute left-0 top-[11400px] w-[781px] h-[600px] overflow-hidden z-20 touch-pan-y"
+      <div
+        className="absolute left-0 top-[12880px] w-[781px] h-[600px] overflow-hidden z-[100]"
+        style={{ touchAction: 'pan-x' }}
         onTouchStart={handlePhotoTouchStart}
         onTouchMove={handlePhotoTouchMove}
         onTouchEnd={handlePhotoTouchEnd}
       >
-        <div 
+        <div
           className="flex items-center gap-[5px] h-full"
           style={{
             transform: `translateX(${photoSlidePosition}px)`,
@@ -680,7 +771,7 @@ export default function FigmaMobileCanvas() {
         >
           {/* Дублируем массив фото для бесконечного эффекта */}
           {[...photoImages, ...photoImages, ...photoImages].map((photo, index) => (
-            <div 
+            <div
               key={index}
               className="flex-shrink-0"
               style={{
@@ -688,11 +779,11 @@ export default function FigmaMobileCanvas() {
                 width: 'auto'
               }}
             >
-              <img 
-                src={photo} 
+              <img
+                src={photo}
                 alt={`Фото ${index + 1}`}
                 className="h-full w-auto object-cover pointer-events-none"
-                style={{ 
+                style={{
                   height: '600px',
                   width: 'auto'
                 }}
@@ -702,9 +793,6 @@ export default function FigmaMobileCanvas() {
         </div>
       </div>
 
-      <div id="mobile-contact-form" className="absolute left-0 top-[12450px] w-full">
-        <FigmaContactForm isMobile={true} />
-      </div>
       </div>
     </div>
   );

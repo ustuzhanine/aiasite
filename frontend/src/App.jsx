@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import FigmaDesktopCanvas from './components/FigmaDesktopCanvas';
 import FigmaMobileCanvas from './components/FigmaMobileCanvas';
-import PrivacyPolicy from './components/PrivacyPolicy';
 
 function App() {
   // Десктопная версия для всех ПК (>1024px), мобильная для планшетов и меньше (<=1024px)
@@ -31,7 +30,6 @@ function App() {
           {isMobile ? <FigmaMobileCanvas /> : <FigmaDesktopCanvas />}
         </div>
       } />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
     </Routes>
   );
 }
