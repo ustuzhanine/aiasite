@@ -74,6 +74,7 @@ export default function FigmaDesktopCanvas() {
   const [partnerSlidePosition, setPartnerSlidePosition] = useState(0);
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
   const [photoSlidePosition, setPhotoSlidePosition] = useState(0);
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
 
   // Состояния для перетаскивания мышью
   const [isDraggingPartners, setIsDraggingPartners] = useState(false);
@@ -172,6 +173,28 @@ export default function FigmaDesktopCanvas() {
     return () => clearInterval(interval);
   }, [isAutoScrollPaused]);
 
+  // Функция прокрутки к началу страницы
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Отслеживание прокрутки для показа/скрытия кнопки
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 1000) { // Показывать кнопку после прокрутки на 1000px
+        setShowScrollTopButton(true);
+      } else {
+        setShowScrollTopButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Обработчики для перетаскивания карусели партнеров мышью
   const handlePartnersMouseDown = (e) => {
     setIsDraggingPartners(true);
@@ -263,14 +286,14 @@ export default function FigmaDesktopCanvas() {
 
   return (
     <div className="w-full overflow-x-hidden bg-white flex justify-center">
-      <div className="relative w-[1920px] h-[11183px]" data-name="pc" data-node-id="1:8" style={{
+      <div className="relative w-[1920px] h-[11283px]" data-name="pc" data-node-id="1:8" style={{
         zoom: scale
       }}>
       {/* Белый фон под всем сайтом */}
-      <div className="absolute bg-white h-[11183px] left-0 top-0 w-full z-0" data-node-id="14:67" />
+      <div className="absolute bg-white h-[11283px] left-0 top-0 w-full z-0" data-node-id="14:67" />
       
       {/* Hero видео с эффектом матового стекла */}
-      <div className="absolute h-[995px] left-0 top-0 w-[1920px] overflow-hidden z-10" data-name="Hero Video Background" data-node-id="1:6">
+      <div className="absolute h-[1095px] left-0 top-0 w-[1920px] overflow-hidden z-10" data-name="Hero Video Background" data-node-id="1:6">
         {/* Слой 1: Видео с размытием */}
         <video 
           autoPlay 
@@ -312,7 +335,7 @@ export default function FigmaDesktopCanvas() {
       >
         <p className="leading-[normal]">о нас</p>
       </div>
-      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1211px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100, scrollMarginTop: '100px' }} data-node-id="14:71">
+      <div id="about" className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[1311px] translate-y-[-50%] w-[219px] z-10" style={{ fontWeight: 100, scrollMarginTop: '100px' }} data-node-id="14:71">
         <p className="leading-[normal]">О нас</p>
       </div>
       <div className="absolute flex flex-col font-['Montserrat',sans-serif] h-[46px] justify-center leading-[0] left-[411px] text-[#071a31] text-[50px] top-[2487px] translate-y-[-50%] w-[683px] z-10" style={{ fontWeight: 100 }} data-node-id="49:276">
@@ -556,7 +579,7 @@ export default function FigmaDesktopCanvas() {
 
           e.preventDefault();
         }}
-        className="absolute left-[425px] top-[706px] w-[337px] h-[70px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
+        className="absolute left-[425px] top-[806px] w-[337px] h-[70px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
         style={{ textDecoration: 'none' }}
         data-node-id="14:70"
       >
@@ -767,6 +790,40 @@ export default function FigmaDesktopCanvas() {
         </div>
         </div>
       </div>
+
+      {/* Кнопка возврата в начало - полупрозрачная */}
+      {showScrollTopButton && (
+        <button
+          onClick={() => {
+            console.log('Кнопка возврата в начало нажата (десктоп)');
+            scrollToTop();
+          }}
+          className="w-32 h-32 bg-[#071a31]/40 backdrop-blur-sm rounded-full z-[10000] cursor-pointer hover:bg-[#071a31]/60 transition-all duration-300 flex items-center justify-center border-2 border-white/20"
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            left: '20px',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%'
+          }}
+          aria-label="Вернуться в начало"
+        >
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="drop-shadow-sm"
+          >
+            <path
+              d="M12 4L4 12h8v8h8V4h-8z"
+              fill="#ffffff"
+            />
+          </svg>
+        </button>
+      )}
 
     </div>
   );

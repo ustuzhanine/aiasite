@@ -86,6 +86,7 @@ export default function FigmaMobileCanvas() {
   const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
   const [startX, setStartX] = useState(0);
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
   const autoScrollTimeoutRef = useRef(null);
 
   // Массив всех партнеров
@@ -271,6 +272,28 @@ export default function FigmaMobileCanvas() {
     }
     setIsMenuOpen(false); // Закрываем меню после клика по ссылке
   };
+
+  // Функция прокрутки к началу страницы
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Отслеживание прокрутки для показа/скрытия кнопки
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 1000) { // Показывать кнопку после прокрутки на 1000px
+        setShowScrollTopButton(true);
+      } else {
+        setShowScrollTopButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
 
   useEffect(() => {
@@ -490,7 +513,7 @@ export default function FigmaMobileCanvas() {
       <div id="team" className="absolute flex flex-col font-['Montserrat',sans-serif] font-medium h-[119px] justify-center leading-[0] text-[#071a31] text-[50px] top-[13127px] translate-y-[-50%] w-[603px]" data-node-id="48:173" style={{ left: "calc(50% - 264.5px)" }}>
           <p className="leading-[normal]">Наша команда</p>
         </div>
-      <p className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[15450px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
+      <p id="contact" className="absolute font-['Montserrat',sans-serif] font-thin h-[87px] leading-[59px] text-[#ffffff] text-[50px] top-[15450px] w-[625px] z-20" data-node-id="48:176" style={{ left: "calc(50% - 261.5px)", color: '#ffffff' }}>
           +7 (915) 085-95-94
         </p>
       <p className="absolute font-['Montserrat',sans-serif] font-thin h-[108px] leading-[59px] text-[#ffffff] text-[50px] top-[15700px] w-[575px] z-20" data-node-id="48:177" style={{ left: "calc(50% - 264.5px)", color: '#ffffff' }}>
@@ -816,6 +839,41 @@ export default function FigmaMobileCanvas() {
       </div>
 
       </div>
+
+      {/* Кнопка возврата в начало - полупрозрачная */}
+      {showScrollTopButton && !isMenuOpen && (
+        <button
+          onClick={() => {
+            console.log('Кнопка возврата в начало нажата');
+            scrollToTop();
+          }}
+          className="w-32 h-32 bg-[#071a31]/40 backdrop-blur-sm rounded-full z-[10000] cursor-pointer hover:bg-[#071a31]/60 transition-all duration-300 flex items-center justify-center border-2 border-white/20"
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            left: '20px',
+            width: '100px',
+            height: '100px',
+            borderRadius: '50%'
+          }}
+          aria-label="Вернуться в начало"
+        >
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="drop-shadow-sm"
+          >
+            <path
+              d="M12 4L4 12h8v8h8V4h-8z"
+              fill="#ffffff"
+            />
+          </svg>
+        </button>
+      )}
+
     </div>
   );
 }
