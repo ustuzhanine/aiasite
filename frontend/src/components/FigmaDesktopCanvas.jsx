@@ -75,6 +75,7 @@ export default function FigmaDesktopCanvas() {
   const [teamSlidePosition, setTeamSlidePosition] = useState(0);
   const [photoSlidePosition, setPhotoSlidePosition] = useState(0);
   const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // Состояния для перетаскивания мышью
   const [isDraggingPartners, setIsDraggingPartners] = useState(false);
@@ -551,33 +552,10 @@ export default function FigmaDesktopCanvas() {
         <p className="leading-[55px]">эксперты по обучению и внедрению ИИ-технологий</p>
       </div>
       {/* Кнопка "связаться с нами" - поверх всех слоёв hero */}
-      <a
-        href="mailto:in@aiagency.ru?subject=Запрос на консультацию по ИИ&body=Здравствуйте!%0A%0AИнтересуют ваши услуги в области искусственного интеллекта.%0A%0AПожалуйста, расскажите подробнее о ваших решениях."
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => {
+      <div
+        onClick={() => {
           console.log('Кнопка "связаться с нами" нажата в десктопной версии');
-
-          // Показываем контакты сразу - самый надежный способ
-          const contactInfo = `Наши контакты:
-
-📧 Email: in@aiagency.ru
-📱 Телефон: +7 (915) 085-95-94
-
-Нажмите Ctrl+C (Cmd+C на Mac) чтобы скопировать контакты и свяжитесь с нами удобным способом!`;
-
-          // Копируем email в буфер обмена
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText('in@aiagency.ru').then(() => {
-              alert('Email скопирован в буфер обмена!\n\n📧 in@aiagency.ru\n📱 +7 (915) 085-95-94');
-            }).catch(() => {
-              alert(contactInfo);
-            });
-          } else {
-            alert(contactInfo);
-          }
-
-          e.preventDefault();
+          setIsContactModalOpen(true);
         }}
         className="absolute left-[425px] top-[806px] w-[337px] h-[70px] bg-[#071a31] rounded-[22px] shadow-[7px_8px_15px_-6px_#12151F] z-[9999] cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
         style={{ textDecoration: 'none' }}
@@ -586,7 +564,7 @@ export default function FigmaDesktopCanvas() {
         <p className="font-['Montserrat',sans-serif] font-medium text-[20px] text-[#ffffff] leading-[normal]" data-node-id="14:69" style={{ color: '#ffffff' }}>
           связаться с нами
         </p>
-      </a>
+      </div>
       {/* Карточки услуг */}
       <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3050px] w-[1256px] z-20" data-node-id="20:89" />
       <div className="absolute bg-[#071a31] h-[369px] left-[332px] rounded-[22px] shadow-[9px_9px_20px_-4px_rgba(30,30,30,0.52)] top-[3457px] w-[1256px] z-20" data-node-id="20:92" />
